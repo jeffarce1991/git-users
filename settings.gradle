@@ -1,0 +1,2 @@
+rootProject.name='my-template-app'
+include ':app'
