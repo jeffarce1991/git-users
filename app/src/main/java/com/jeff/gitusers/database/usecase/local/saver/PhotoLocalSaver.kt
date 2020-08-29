@@ -1,6 +1,6 @@
-package com.jeff.template.database.usecase.local.saver
+package com.jeff.gitusers.database.usecase.local.saver
 
-import com.jeff.template.database.local.Photo
+import com.jeff.gitusers.database.local.Photo
 import io.reactivex.Completable
 import io.reactivex.Observable
 

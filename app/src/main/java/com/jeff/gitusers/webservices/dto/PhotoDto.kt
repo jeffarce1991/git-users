@@ -1,4 +1,4 @@
-package com.jeff.template.webservices.dto
+package com.jeff.gitusers.webservices.dto
 
 import com.google.gson.annotations.SerializedName
 

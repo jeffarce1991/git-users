@@ -1,7 +1,7 @@
-package com.jeff.template.webservices.transformer;
+package com.jeff.gitusers.webservices.transformer;
 
 
-import com.jeff.template.utilities.exception.NullResultException;
+import com.jeff.gitusers.utilities.exception.NullResultException;
 
 import io.reactivex.Single;
 import io.reactivex.SingleTransformer;

@@ -1,9 +1,9 @@
-package com.jeff.template.webservices.usecase.loader
+package com.jeff.gitusers.webservices.usecase.loader
 
-import com.jeff.template.webservices.api.ApiFactory
-import com.jeff.template.webservices.api.photos.PhotosApi
-import com.jeff.template.webservices.dto.PhotoDto
-import com.jeff.template.webservices.transformer.ResponseCodeNot200SingleTransformer
+import com.jeff.gitusers.webservices.api.ApiFactory
+import com.jeff.gitusers.webservices.api.photos.PhotosApi
+import com.jeff.gitusers.webservices.dto.PhotoDto
+import com.jeff.gitusers.webservices.transformer.ResponseCodeNot200SingleTransformer
 import io.reactivex.Single
 import javax.inject.Inject
 

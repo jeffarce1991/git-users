@@ -1,4 +1,4 @@
-package com.jeff.template
+package com.jeff.gitusers
 
 import android.app.Application
 import android.content.Context

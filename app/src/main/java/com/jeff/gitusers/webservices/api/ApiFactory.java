@@ -1,4 +1,4 @@
-package com.jeff.template.webservices.api;
+package com.jeff.gitusers.webservices.api;
 
 import io.reactivex.Single;
 

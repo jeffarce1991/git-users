@@ -1,4 +1,4 @@
-package com.jeff.template.webservices.api
+package com.jeff.gitusers.webservices.api
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

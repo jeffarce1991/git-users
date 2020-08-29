@@ -1,6 +1,6 @@
-package com.jeff.template.utilities
+package com.jeff.gitusers.utilities
 
-import com.jeff.template.utilities.rx.RxSchedulerUtilsModule
+import com.jeff.gitusers.utilities.rx.RxSchedulerUtilsModule
 import dagger.Module
 
 

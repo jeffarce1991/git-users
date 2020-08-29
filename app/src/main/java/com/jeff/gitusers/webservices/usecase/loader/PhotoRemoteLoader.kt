@@ -1,6 +1,6 @@
-package com.jeff.template.webservices.usecase.loader
+package com.jeff.gitusers.webservices.usecase.loader
 
-import com.jeff.template.webservices.dto.PhotoDto
+import com.jeff.gitusers.webservices.dto.PhotoDto
 import io.reactivex.Single
 
 interface PhotoRemoteLoader {

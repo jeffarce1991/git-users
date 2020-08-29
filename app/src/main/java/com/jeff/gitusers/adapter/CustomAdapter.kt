@@ -1,22 +1,21 @@
-package com.jeff.template.adapter
+package com.jeff.gitusers.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.jakewharton.picasso.OkHttp3Downloader
-import com.jeff.template.R
-import com.jeff.template.adapter.CustomAdapter.CustomViewHolder
-import com.jeff.template.android.base.extension.shortToast
-import com.jeff.template.database.local.Photo
-import com.jeff.template.databinding.CustomRowBinding
-import com.jeff.template.main.view.MainActivity
+import com.jeff.gitusers.R
+import com.jeff.gitusers.adapter.CustomAdapter.CustomViewHolder
+import com.jeff.gitusers.android.base.extension.shortToast
+import com.jeff.gitusers.database.local.Photo
+import com.jeff.gitusers.databinding.CustomRowBinding
+import com.jeff.gitusers.main.view.MainActivity
 import com.squareup.picasso.Picasso
 
 internal class CustomAdapter(

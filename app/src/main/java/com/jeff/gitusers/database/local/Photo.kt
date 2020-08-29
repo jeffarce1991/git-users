@@ -1,4 +1,4 @@
-package com.jeff.template.database.local
+package com.jeff.gitusers.database.local
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

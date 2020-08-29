@@ -1,13 +1,13 @@
-package com.jeff.template
+package com.jeff.gitusers
 
 import android.app.Application
-import com.jeff.template.database.DatabaseModule
-import com.jeff.template.webservices.internet.RxInternetModule
-import com.jeff.template.main.MainModule
-import com.jeff.template.supplychain.photo.PhotoUseCaseModule
-import com.jeff.template.utilities.UtilityModule
-import com.jeff.template.webservices.api.ApiModule
-import com.jeff.template.webservices.usecase.WebServiceUseCaseModule
+import com.jeff.gitusers.database.DatabaseModule
+import com.jeff.gitusers.webservices.internet.RxInternetModule
+import com.jeff.gitusers.main.MainModule
+import com.jeff.gitusers.supplychain.photo.PhotoUseCaseModule
+import com.jeff.gitusers.utilities.UtilityModule
+import com.jeff.gitusers.webservices.api.ApiModule
+import com.jeff.gitusers.webservices.usecase.WebServiceUseCaseModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule

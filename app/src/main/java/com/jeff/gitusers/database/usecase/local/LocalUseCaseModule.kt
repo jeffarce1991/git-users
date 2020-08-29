@@ -1,9 +1,9 @@
-package com.jeff.template.database.usecase.local
+package com.jeff.gitusers.database.usecase.local
 
-import com.jeff.template.database.usecase.local.loader.DefaultPhotoLocalLoader
-import com.jeff.template.database.usecase.local.loader.PhotoLocalLoader
-import com.jeff.template.database.usecase.local.saver.DefaultPhotoLocalSaver
-import com.jeff.template.database.usecase.local.saver.PhotoLocalSaver
+import com.jeff.gitusers.database.usecase.local.loader.DefaultPhotoLocalLoader
+import com.jeff.gitusers.database.usecase.local.loader.PhotoLocalLoader
+import com.jeff.gitusers.database.usecase.local.saver.DefaultPhotoLocalSaver
+import com.jeff.gitusers.database.usecase.local.saver.PhotoLocalSaver
 import dagger.Binds
 import dagger.Module
 

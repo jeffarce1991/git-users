@@ -1,4 +1,4 @@
-package com.jeff.template.webservices.transformer
+package com.jeff.gitusers.webservices.transformer
 
 import io.reactivex.Single
 import io.reactivex.SingleSource

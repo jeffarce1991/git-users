@@ -1,6 +1,6 @@
-package com.jeff.template.webservices.transformer
+package com.jeff.gitusers.webservices.transformer
 
-import com.jeff.template.webservices.exception.SessionExpiredException
+import com.jeff.gitusers.webservices.exception.SessionExpiredException
 import io.reactivex.Single
 import io.reactivex.SingleSource
 import io.reactivex.SingleTransformer

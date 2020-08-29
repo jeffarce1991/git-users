@@ -1,7 +1,7 @@
-package com.jeff.template.main.mapper
+package com.jeff.gitusers.main.mapper
 
-import com.jeff.template.database.local.Photo
-import com.jeff.template.webservices.dto.PhotoDto
+import com.jeff.gitusers.database.local.Photo
+import com.jeff.gitusers.webservices.dto.PhotoDto
 import io.reactivex.Observable
 import io.reactivex.functions.Function
 

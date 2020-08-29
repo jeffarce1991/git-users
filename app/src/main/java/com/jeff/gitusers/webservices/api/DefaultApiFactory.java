@@ -1,7 +1,7 @@
-package com.jeff.template.webservices.api;
+package com.jeff.gitusers.webservices.api;
 
-import com.jeff.template.BuildConfig;
-import com.jeff.template.Constants;
+import com.jeff.gitusers.BuildConfig;
+import com.jeff.gitusers.Constants;
 
 import javax.inject.Inject;
 

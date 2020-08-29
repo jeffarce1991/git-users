@@ -1,9 +1,9 @@
-package com.jeff.template.database.room.converter;
+package com.jeff.gitusers.database.room.converter;
 
 import androidx.room.TypeConverter;
 
-import com.jeff.template.database.local.Photo;
-import com.jeff.template.utilities.ConverterUtil;
+import com.jeff.gitusers.database.local.Photo;
+import com.jeff.gitusers.utilities.ConverterUtil;
 
 public class PhotoConverter {
     private PhotoConverter() { }

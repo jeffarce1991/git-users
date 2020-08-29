@@ -1,8 +1,8 @@
-package com.jeff.template.webservices.internet
+package com.jeff.gitusers.webservices.internet
 
 import io.reactivex.Completable
 import javax.inject.Inject
-import com.jeff.template.webservices.exception.NoInternetException
+import com.jeff.gitusers.webservices.exception.NoInternetException
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit

@@ -1,4 +1,4 @@
-package com.jeff.template.webservices.internet
+package com.jeff.gitusers.webservices.internet
 
 import io.reactivex.Completable
 import io.reactivex.annotations.SchedulerSupport

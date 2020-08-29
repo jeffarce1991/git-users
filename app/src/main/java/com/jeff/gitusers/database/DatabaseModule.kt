@@ -1,11 +1,11 @@
-package com.jeff.template.database
+package com.jeff.gitusers.database
 
 import android.app.Application
 import androidx.room.Room
-import com.jeff.template.R
-import com.jeff.template.database.room.AppDatabase
-import com.jeff.template.database.room.dao.PhotoDao
-import com.jeff.template.database.usecase.local.LocalUseCaseModule
+import com.jeff.gitusers.R
+import com.jeff.gitusers.database.room.AppDatabase
+import com.jeff.gitusers.database.room.dao.PhotoDao
+import com.jeff.gitusers.database.usecase.local.LocalUseCaseModule
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

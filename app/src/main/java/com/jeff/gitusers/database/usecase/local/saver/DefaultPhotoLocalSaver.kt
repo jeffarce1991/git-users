@@ -1,7 +1,7 @@
-package com.jeff.template.database.usecase.local.saver
+package com.jeff.gitusers.database.usecase.local.saver
 
-import com.jeff.template.database.local.Photo
-import com.jeff.template.database.room.dao.PhotoDao
+import com.jeff.gitusers.database.local.Photo
+import com.jeff.gitusers.database.room.dao.PhotoDao
 import io.reactivex.Completable
 import io.reactivex.Observable
 import timber.log.Timber

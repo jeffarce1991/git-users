@@ -1,4 +1,4 @@
-package com.jeff.template
+package com.jeff.gitusers
 
 import org.junit.Test
 

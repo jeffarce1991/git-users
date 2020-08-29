@@ -1,4 +1,4 @@
-package com.jeff.template.main.view
+package com.jeff.gitusers.main.view
 
 import android.app.ProgressDialog
 import android.app.ProgressDialog.*
@@ -9,14 +9,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hannesdorfmann.mosby.mvp.MvpActivity
-import com.jeff.template.BuildConfig
-import com.jeff.template.R
-import com.jeff.template.adapter.CustomAdapter
-import com.jeff.template.android.base.extension.invokeSimpleDialog
-import com.jeff.template.android.base.extension.longToast
-import com.jeff.template.database.local.Photo
-import com.jeff.template.databinding.ActivityMainBinding
-import com.jeff.template.main.presenter.MainPresenter
+import com.jeff.gitusers.BuildConfig
+import com.jeff.gitusers.R
+import com.jeff.gitusers.adapter.CustomAdapter
+import com.jeff.gitusers.android.base.extension.invokeSimpleDialog
+import com.jeff.gitusers.android.base.extension.longToast
+import com.jeff.gitusers.database.local.Photo
+import com.jeff.gitusers.databinding.ActivityMainBinding
+import com.jeff.gitusers.main.presenter.MainPresenter
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.content_main.view.*
 import javax.inject.Inject

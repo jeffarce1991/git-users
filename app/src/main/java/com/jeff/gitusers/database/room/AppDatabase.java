@@ -1,12 +1,12 @@
-package com.jeff.template.database.room;
+package com.jeff.gitusers.database.room;
 
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-import com.jeff.template.database.local.Photo;
-import com.jeff.template.database.room.converter.PhotoConverter;
-import com.jeff.template.database.room.dao.PhotoDao;
+import com.jeff.gitusers.database.local.Photo;
+import com.jeff.gitusers.database.room.converter.PhotoConverter;
+import com.jeff.gitusers.database.room.dao.PhotoDao;
 
 @Database(
         entities = {

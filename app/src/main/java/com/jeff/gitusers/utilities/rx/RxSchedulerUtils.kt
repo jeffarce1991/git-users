@@ -1,4 +1,4 @@
-package com.jeff.template.utilities.rx
+package com.jeff.gitusers.utilities.rx
 
 import io.reactivex.CompletableTransformer
 import io.reactivex.FlowableTransformer

@@ -1,4 +1,4 @@
-package com.jeff.template.main.presenter
+package com.jeff.gitusers.main.presenter
 
 import dagger.Binds
 import dagger.Module

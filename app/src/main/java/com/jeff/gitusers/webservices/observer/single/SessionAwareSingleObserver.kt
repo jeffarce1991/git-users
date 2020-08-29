@@ -1,8 +1,8 @@
-package com.jeff.template.webservices.observer.single
+package com.jeff.gitusers.webservices.observer.single
 
 import androidx.annotation.CallSuper
-import com.jeff.template.webservices.exception.SessionExpiredException
-import com.jeff.template.webservices.observer.BaseSessionAwareObserver
+import com.jeff.gitusers.webservices.exception.SessionExpiredException
+import com.jeff.gitusers.webservices.observer.BaseSessionAwareObserver
 
 import io.reactivex.SingleObserver
 

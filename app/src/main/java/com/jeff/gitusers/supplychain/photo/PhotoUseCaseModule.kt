@@ -1,4 +1,4 @@
-package com.jeff.template.supplychain.photo
+package com.jeff.gitusers.supplychain.photo
 
 import dagger.Binds
 import dagger.Module

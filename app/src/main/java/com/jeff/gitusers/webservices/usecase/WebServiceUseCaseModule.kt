@@ -1,7 +1,7 @@
-package com.jeff.template.webservices.usecase
+package com.jeff.gitusers.webservices.usecase
 
-import com.jeff.template.webservices.usecase.loader.DefaultPhotoRemoteLoader
-import com.jeff.template.webservices.usecase.loader.PhotoRemoteLoader
+import com.jeff.gitusers.webservices.usecase.loader.DefaultPhotoRemoteLoader
+import com.jeff.gitusers.webservices.usecase.loader.PhotoRemoteLoader
 import dagger.Binds
 import dagger.Module
 

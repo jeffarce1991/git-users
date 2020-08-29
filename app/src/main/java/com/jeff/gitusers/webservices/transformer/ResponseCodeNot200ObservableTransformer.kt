@@ -1,4 +1,4 @@
-package com.jeff.template.webservices.transformer
+package com.jeff.gitusers.webservices.transformer
 
 import io.reactivex.Observable
 import io.reactivex.ObservableSource

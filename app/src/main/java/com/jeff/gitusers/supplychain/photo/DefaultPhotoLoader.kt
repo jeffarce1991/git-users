@@ -1,11 +1,11 @@
-package com.jeff.template.supplychain.photo
+package com.jeff.gitusers.supplychain.photo
 
-import com.jeff.template.database.local.Photo
-import com.jeff.template.database.usecase.local.loader.PhotoLocalLoader
-import com.jeff.template.database.usecase.local.saver.PhotoLocalSaver
-import com.jeff.template.main.mapper.PhotoDtoToPhotoMapper
-import com.jeff.template.webservices.internet.RxInternet
-import com.jeff.template.webservices.usecase.loader.PhotoRemoteLoader
+import com.jeff.gitusers.database.local.Photo
+import com.jeff.gitusers.database.usecase.local.loader.PhotoLocalLoader
+import com.jeff.gitusers.database.usecase.local.saver.PhotoLocalSaver
+import com.jeff.gitusers.main.mapper.PhotoDtoToPhotoMapper
+import com.jeff.gitusers.webservices.internet.RxInternet
+import com.jeff.gitusers.webservices.usecase.loader.PhotoRemoteLoader
 import io.reactivex.Observable
 import io.reactivex.Single
 import javax.inject.Inject

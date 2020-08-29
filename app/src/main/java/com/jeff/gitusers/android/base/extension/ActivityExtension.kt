@@ -1,9 +1,9 @@
-package com.jeff.template.android.base.extension
+package com.jeff.gitusers.android.base.extension
 
 import android.app.Activity
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import com.jeff.template.R
+import com.jeff.gitusers.R
 
 fun Activity.invokeSimpleDialog(title: String,
                                 positiveButtonText: String,

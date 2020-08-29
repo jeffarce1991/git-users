@@ -1,3 +1,3 @@
-package com.jeff.template.utilities.exception
+package com.jeff.gitusers.utilities.exception
 
 class EmptyResultException : Throwable("Empty Result Exception")

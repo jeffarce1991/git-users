@@ -1,4 +1,4 @@
-package com.jeff.template
+package com.jeff.gitusers
 
 class Constants private constructor() {
     object Gateways {

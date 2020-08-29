@@ -1,4 +1,4 @@
-package com.jeff.template.utilities
+package com.jeff.gitusers.utilities
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder

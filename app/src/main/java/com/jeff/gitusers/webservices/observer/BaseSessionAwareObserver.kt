@@ -1,4 +1,4 @@
-package com.jeff.template.webservices.observer
+package com.jeff.gitusers.webservices.observer
 
 interface BaseSessionAwareObserver {
 
