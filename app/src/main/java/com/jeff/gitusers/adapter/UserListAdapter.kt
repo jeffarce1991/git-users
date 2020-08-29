@@ -11,17 +11,18 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.jakewharton.picasso.OkHttp3Downloader
 import com.jeff.gitusers.R
-import com.jeff.gitusers.adapter.CustomAdapter.CustomViewHolder
+import com.jeff.gitusers.adapter.UserListAdapter.CustomViewHolder
 import com.jeff.gitusers.android.base.extension.shortToast
-import com.jeff.gitusers.database.local.Photo
+import com.jeff.gitusers.database.local.User
 import com.jeff.gitusers.databinding.CustomRowBinding
 import com.jeff.gitusers.main.view.MainActivity
 import com.squareup.picasso.Picasso
 
-internal class CustomAdapter(
+internal class UserListAdapter(
     private val context: Context,
-    private val dataList: List<Photo>
+    private val dataList: MutableList<User>
 ) : RecyclerView.Adapter<CustomViewHolder>() {
+
 
     internal inner class CustomViewHolder(binding: CustomRowBinding) :
         ViewHolder(binding.root) {
@@ -41,10 +42,10 @@ internal class CustomAdapter(
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         val item = dataList[position]
-        holder.txtTitle.text = item.title
+        holder.txtTitle.text = item.login
         val builder = Picasso.Builder(context)
         builder.downloader(OkHttp3Downloader(context))
-        builder.build().load(item.thumbnailUrl)
+        builder.build().load(item.avatarUrl)
             .placeholder(R.drawable.ic_launcher_background)
             .error(R.drawable.ic_launcher_background)
             .into(holder.coverImage)
@@ -55,8 +56,17 @@ internal class CustomAdapter(
         }
     }
 
+    fun addAll(users: List<User>) {
+        dataList.addAll(users)
+
+        notifyDataSetChanged()
+    }
     override fun getItemCount(): Int {
         return dataList.size
+    }
+
+    fun getLastIndexId(): Int {
+        return dataList.last().id
     }
 
 }
