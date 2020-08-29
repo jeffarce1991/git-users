@@ -14,10 +14,12 @@ data class User constructor(
                  @ColumnInfo(name = "avatar_url")
                  var avatarUrl: String,
                  @ColumnInfo(name = "url")
-                 var url: String
+                 var url: String,
+                 @ColumnInfo(name = "html_url")
+                 var htmlUrl: String
                 ) {
 
-    constructor() : this(-1, "", "", "")
+    constructor() : this(-1, "", "", "", "")
 
     companion object {
 

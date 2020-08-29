@@ -16,7 +16,8 @@ class UserDtoToUserMapper : Function<UserDto, Observable<User>> {
                 userDto.id,
                 userDto.login,
                 userDto.avatarUrl,
-                userDto.url
+                userDto.url,
+                userDto.htmlUrl
             )
             user
         }

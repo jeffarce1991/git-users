@@ -8,5 +8,6 @@ open class UserDto(
     @field:SerializedName("node_id") var nodeId: String,
     @field:SerializedName("avatar_url") var avatarUrl: String,
     @field:SerializedName("gravatar_id") var gravatarId: String,
-    @field:SerializedName("url") var url: String
+    @field:SerializedName("url") var url: String,
+    @field:SerializedName("html_url") var htmlUrl: String
 )
