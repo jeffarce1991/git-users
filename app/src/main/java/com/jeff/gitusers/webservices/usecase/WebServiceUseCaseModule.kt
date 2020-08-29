@@ -1,7 +1,7 @@
 package com.jeff.gitusers.webservices.usecase
 
-import com.jeff.gitusers.webservices.usecase.loader.DefaultPhotoRemoteLoader
-import com.jeff.gitusers.webservices.usecase.loader.PhotoRemoteLoader
+import com.jeff.gitusers.webservices.usecase.loader.DefaultUserRemoteLoader
+import com.jeff.gitusers.webservices.usecase.loader.UserRemoteLoader
 import dagger.Binds
 import dagger.Module
 
@@ -10,6 +10,6 @@ interface WebServiceUseCaseModule {
 
     @Binds
     fun bindPhotoRemoteLoader(
-            defaultPhotoRemoteLoader: DefaultPhotoRemoteLoader):
-            PhotoRemoteLoader
+            defaultPhotoRemoteLoader: DefaultUserRemoteLoader):
+            UserRemoteLoader
 }

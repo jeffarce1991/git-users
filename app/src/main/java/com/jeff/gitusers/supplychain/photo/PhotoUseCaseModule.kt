@@ -7,5 +7,5 @@ import dagger.Module
 abstract class PhotoUseCaseModule {
 
     @Binds
-    abstract fun bindPhotoLoader(defaultPhotoLoader: DefaultPhotoLoader): PhotoLoader
+    abstract fun bindPhotoLoader(defaultPhotoLoader: DefaultUserLoader): UserLoader
 }
