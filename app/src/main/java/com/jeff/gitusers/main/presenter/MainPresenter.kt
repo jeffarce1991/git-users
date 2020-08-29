@@ -5,5 +5,6 @@ import com.jeff.gitusers.main.view.MainView
 
 interface MainPresenter: MvpPresenter<MainView> {
     fun getPhoto(id: Int)
-    fun getPhotos()
+    fun loadInitialUsers()
+    fun loadMoreUsers(fromId: Int)
 }
