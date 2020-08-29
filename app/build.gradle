@@ -11,7 +11,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.jeff.project420"
+        applicationId "com.jeff.gitusers"
         minSdkVersion 16
         targetSdkVersion 29
         versionCode 1
