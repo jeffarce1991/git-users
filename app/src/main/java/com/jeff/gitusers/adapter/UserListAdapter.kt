@@ -11,10 +11,11 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.jeff.gitusers.R
-import com.jeff.gitusers.adapter.UserListAdapter.CustomViewHolder
+import com.jeff.gitusers.adapter.UserListAdapter.UserViewHolder
 import com.jeff.gitusers.android.base.extension.invertColor
 import com.jeff.gitusers.android.base.extension.shortToast
 import com.jeff.gitusers.database.local.User
+import com.jeff.gitusers.databinding.ItemLoadingBinding
 import com.jeff.gitusers.databinding.ItemUserBinding
 import com.jeff.gitusers.main.list.view.MainActivity
 
@@ -22,27 +23,25 @@ import com.jeff.gitusers.main.list.view.MainActivity
 internal class UserListAdapter(
     private val context: Context,
     private var userList: MutableList<User>
-) : RecyclerView.Adapter<CustomViewHolder>() {
-
-
-    internal inner class CustomViewHolder(binding: ItemUserBinding) :
+) : RecyclerView.Adapter<UserViewHolder>() {
+    
+    internal inner class UserViewHolder(binding: ItemUserBinding) :
         ViewHolder(binding.root) {
         var itemLayout: ConstraintLayout = binding.itemLayout
         var txtTitle: TextView = binding.customRowTitle
         val coverImage: ImageView = binding.coverImage
         val txtDetails: TextView = binding.details
-
     }
 
-    override fun onCreateViewHolder(p0: ViewGroup, p1: Int): CustomViewHolder {
+    override fun onCreateViewHolder(p0: ViewGroup, p1: Int): UserViewHolder {
         val binding = DataBindingUtil.inflate<ItemUserBinding>(LayoutInflater.from(p0.context),
             R.layout.item_user,
             p0,
             false)
-        return CustomViewHolder(binding)
+        return UserViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val item = userList[position]
         holder.txtTitle.text = item.login
         holder.txtDetails.text = item.htmlUrl
@@ -84,8 +83,8 @@ internal class UserListAdapter(
 
     fun addAll(users: List<User>) {
         userList.addAll(users)
-
         notifyDataSetChanged()
+
     }
     override fun getItemCount(): Int {
         return userList.size
