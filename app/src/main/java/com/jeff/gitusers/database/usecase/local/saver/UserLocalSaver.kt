@@ -1,12 +1,13 @@
 package com.jeff.gitusers.database.usecase.local.saver
 
 import com.jeff.gitusers.database.local.Photo
+import com.jeff.gitusers.database.local.User
 import io.reactivex.Completable
 import io.reactivex.Observable
 
-interface PhotoLocalSaver {
+interface UserLocalSaver {
 
-    fun save(photo: Photo): Completable
+    fun save(user: User): Completable
 
-    fun saveAll(photos: List<Photo>): Observable<List<Photo>>
+    fun saveAll(users: List<User>): Observable<List<User>>
 }
