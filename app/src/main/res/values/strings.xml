@@ -10,4 +10,7 @@
     <string name="cancel">Cancel</string>
     <string name="about">About</string>
     <string name="about_description">An app that can fetch GitHub users list and then display the selected users profile. \n\n</string>
+    <string name="search">Search</string>
+    <string name="exit">Exit</string>
+    <string name="search_hint">Search by Username, Note..</string>
 </resources>
