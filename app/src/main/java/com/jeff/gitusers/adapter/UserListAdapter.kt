@@ -1,8 +1,6 @@
 package com.jeff.gitusers.adapter
 
 import android.content.Context
-import android.graphics.ColorMatrix
-import android.graphics.ColorMatrixColorFilter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -11,24 +9,23 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.jakewharton.picasso.OkHttp3Downloader
+import com.bumptech.glide.Glide
 import com.jeff.gitusers.R
 import com.jeff.gitusers.adapter.UserListAdapter.CustomViewHolder
+import com.jeff.gitusers.android.base.extension.invertColor
 import com.jeff.gitusers.android.base.extension.shortToast
 import com.jeff.gitusers.database.local.User
-import com.jeff.gitusers.databinding.CustomRowBinding
-import com.jeff.gitusers.main.view.MainActivity
-import com.squareup.picasso.Callback
-import com.squareup.picasso.Picasso
+import com.jeff.gitusers.databinding.ItemUserBinding
+import com.jeff.gitusers.main.list.view.MainActivity
 
 
 internal class UserListAdapter(
     private val context: Context,
-    private val dataList: MutableList<User>
+    private var userList: MutableList<User>
 ) : RecyclerView.Adapter<CustomViewHolder>() {
 
 
-    internal inner class CustomViewHolder(binding: CustomRowBinding) :
+    internal inner class CustomViewHolder(binding: ItemUserBinding) :
         ViewHolder(binding.root) {
         var itemLayout: ConstraintLayout = binding.itemLayout
         var txtTitle: TextView = binding.customRowTitle
@@ -38,35 +35,26 @@ internal class UserListAdapter(
     }
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): CustomViewHolder {
-        val binding = DataBindingUtil.inflate<CustomRowBinding>(LayoutInflater.from(p0.context),
-            R.layout.custom_row,
+        val binding = DataBindingUtil.inflate<ItemUserBinding>(LayoutInflater.from(p0.context),
+            R.layout.item_user,
             p0,
             false)
         return CustomViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
-        val item = dataList[position]
+        val item = userList[position]
         holder.txtTitle.text = item.login
         holder.txtDetails.text = item.htmlUrl
-        val builder = Picasso.Builder(context)
-        builder.downloader(OkHttp3Downloader(context))
-        builder.build().load(item.avatarUrl)
+
+        Glide
+            .with(context)
+            .load(item.avatarUrl)
+            .centerCrop()
             .placeholder(R.drawable.ic_launcher_background)
-            .error(R.drawable.ic_launcher_background)
-            .into(holder.coverImage,object: Callback{
-                override fun onSuccess() {
-                    if (position%4 == 0 && position != 0) {
-                        invertColor(holder.coverImage)
-                    }
-                }
+            .into(holder.coverImage)
 
-                override fun onError() {
-                    TODO("Not yet implemented")
-                }
-            })
-
-
+        invertEvery4thItem(holder.coverImage, position)
 
         holder.itemLayout.setOnClickListener {
             val context = context as MainActivity
@@ -74,31 +62,37 @@ internal class UserListAdapter(
         }
     }
 
+    private fun invertEvery4thItem(imageView: ImageView, position: Int){
+        if (position%4 == 0 && position != 0 ) {
+            imageView.invertColor()
+        } else {
+            imageView.clearColorFilter()
+        }
+    }
+
+    //This method will filter the list
+    //here we are passing the filtered data
+    //and assigning it to the list with notifydatasetchanged method
+    fun update(users: List<User>) {
+        this.userList = users as MutableList<User>
+        notifyDataSetChanged()
+    }
+
+    fun getAll(): List<User> {
+        return this.userList
+    }
+
     fun addAll(users: List<User>) {
-        dataList.addAll(users)
+        userList.addAll(users)
 
         notifyDataSetChanged()
     }
     override fun getItemCount(): Int {
-        return dataList.size
+        return userList.size
     }
 
     fun getLastIndexId(): Int {
-        return dataList.last().id
-    }
-
-    fun invertColor(imageView: ImageView) {
-        val invertMX = floatArrayOf(
-            -1.0f, 0.0f, 0.0f, 0.0f, 255.0f,
-            0.0f, -1.0f, 0.0f, 0.0f, 255.0f,
-            0.0f, 0.0f, -1.0f, 0.0f, 255.0f,
-            0.0f, 0.0f, 0.0f, 1.0f, 0.0f
-        )
-
-        val invertCM = ColorMatrix(invertMX)
-
-        val filter = ColorMatrixColorFilter(invertCM)
-        imageView.colorFilter = filter
+        return userList.last().id
     }
 
 }
