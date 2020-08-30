@@ -5,21 +5,24 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
 import com.jeff.gitusers.database.local.Photo;
+import com.jeff.gitusers.database.local.User;
 import com.jeff.gitusers.database.room.converter.PhotoConverter;
+import com.jeff.gitusers.database.room.converter.UserConverter;
 import com.jeff.gitusers.database.room.dao.PhotoDao;
+import com.jeff.gitusers.database.room.dao.UserDao;
 
 @Database(
         entities = {
-                Photo.class
+                User.class
         },
-        version = 3,
+        version = 5,
         exportSchema = false
 )
 
 @TypeConverters(
         {
-                PhotoConverter.class
+                UserConverter.class
         })
 public abstract class AppDatabase extends RoomDatabase {
-        public abstract PhotoDao photoDao();
+        public abstract UserDao userDao();
 }

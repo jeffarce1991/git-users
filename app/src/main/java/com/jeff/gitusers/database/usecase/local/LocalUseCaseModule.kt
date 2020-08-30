@@ -1,17 +1,17 @@
 package com.jeff.gitusers.database.usecase.local
 
-import com.jeff.gitusers.database.usecase.local.loader.DefaultPhotoLocalLoader
-import com.jeff.gitusers.database.usecase.local.loader.PhotoLocalLoader
-import com.jeff.gitusers.database.usecase.local.saver.DefaultPhotoLocalSaver
-import com.jeff.gitusers.database.usecase.local.saver.PhotoLocalSaver
+import com.jeff.gitusers.database.usecase.local.loader.DefaultUserLocalLoader
+import com.jeff.gitusers.database.usecase.local.loader.UserLocalLoader
+import com.jeff.gitusers.database.usecase.local.saver.DefaultUserLocalSaver
+import com.jeff.gitusers.database.usecase.local.saver.UserLocalSaver
 import dagger.Binds
 import dagger.Module
 
 @Module
 interface LocalUseCaseModule {
     @Binds
-    fun bindPhotoLocalLoader(implementation: DefaultPhotoLocalLoader): PhotoLocalLoader
+    fun bindUserLocalLoader(implementation: DefaultUserLocalLoader): UserLocalLoader
 
     @Binds
-    fun bindPhotoLocalSaver(implementation: DefaultPhotoLocalSaver): PhotoLocalSaver
+    fun bindUserLocalSaver(implementation: DefaultUserLocalSaver): UserLocalSaver
 }
