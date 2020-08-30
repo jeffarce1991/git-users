@@ -17,6 +17,7 @@ import com.jeff.gitusers.android.base.extension.shortToast
 import com.jeff.gitusers.database.local.User
 import com.jeff.gitusers.databinding.ItemLoadingBinding
 import com.jeff.gitusers.databinding.ItemUserBinding
+import com.jeff.gitusers.main.detail.view.DetailActivity
 import com.jeff.gitusers.main.list.view.MainActivity
 
 
@@ -56,8 +57,12 @@ internal class UserListAdapter(
         invertEvery4thItem(holder.coverImage, position)
 
         holder.itemLayout.setOnClickListener {
-            val context = context as MainActivity
-            context.shortToast("${item.id}")
+            val intent = DetailActivity.getStartIntent(
+                context,
+                item.id,
+                item.avatarUrl
+            )
+            context.startActivity(intent)
         }
     }
 
