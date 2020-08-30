@@ -3,17 +3,15 @@ package com.jeff.gitusers.main.detail.view
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.appbar.CollapsingToolbarLayout
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
+import com.hannesdorfmann.mosby.mvp.MvpActivity
 import com.jeff.gitusers.R
 import com.jeff.gitusers.databinding.ActivityDetailBinding
-import com.jeff.gitusers.databinding.ActivityMainBinding
+import com.jeff.gitusers.main.detail.presenter.UserDetailPresenter
 
-class DetailActivity : AppCompatActivity() {
+class UserDetailActivity : MvpActivity<UserDetailView, UserDetailPresenter>(), UserDetailView {
 
     companion object {
         private var EXTRA_ID = "EXTRA_ID"
@@ -26,12 +24,13 @@ class DetailActivity : AppCompatActivity() {
 
 
         ): Intent {
-            return Intent(context, DetailActivity::class.java)
+            return Intent(context, UserDetailActivity::class.java)
                 .putExtra(EXTRA_ID, id)
                 .putExtra(EXTRA_AVATAR_URL, avatarUrl)
         }
     }
 
+    private lateinit var userDetailPresenter : UserDetailPresenter
     private lateinit var binding : ActivityDetailBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,7 +48,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setupToolbar() {
-        binding.toolbarLayout.title = intent.getStringExtra(EXTRA_ID)
+        binding.toolbarLayout.title = intent.getIntExtra(EXTRA_ID, -1).toString()
         binding.toolbar.setNavigationOnClickListener { onBackPressed() }
         setHeaderImage()
     }
@@ -62,4 +61,6 @@ class DetailActivity : AppCompatActivity() {
             .placeholder(R.drawable.ic_launcher_background)
             .into(binding.headerImage)
     }
+
+    override fun createPresenter(): UserDetailPresenter = userDetailPresenter
 }

@@ -13,12 +13,10 @@ import com.bumptech.glide.Glide
 import com.jeff.gitusers.R
 import com.jeff.gitusers.adapter.UserListAdapter.UserViewHolder
 import com.jeff.gitusers.android.base.extension.invertColor
-import com.jeff.gitusers.android.base.extension.shortToast
 import com.jeff.gitusers.database.local.User
 import com.jeff.gitusers.databinding.ItemLoadingBinding
 import com.jeff.gitusers.databinding.ItemUserBinding
-import com.jeff.gitusers.main.detail.view.DetailActivity
-import com.jeff.gitusers.main.list.view.MainActivity
+import com.jeff.gitusers.main.detail.view.UserDetailActivity
 
 
 internal class UserListAdapter(
@@ -57,7 +55,7 @@ internal class UserListAdapter(
         invertEvery4thItem(holder.coverImage, position)
 
         holder.itemLayout.setOnClickListener {
-            val intent = DetailActivity.getStartIntent(
+            val intent = UserDetailActivity.getStartIntent(
                 context,
                 item.id,
                 item.avatarUrl
