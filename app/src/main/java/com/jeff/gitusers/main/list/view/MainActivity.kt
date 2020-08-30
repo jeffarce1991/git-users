@@ -57,7 +57,7 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(),
 
         setUpToolbarTitle()
         mainBinding.root.swipeRefreshLayout.setOnRefreshListener {
-            //mainPresenter.loadInitialUsers()
+            mainPresenter.loadInitialUsers()
         }
         initScrollListener()
 
@@ -183,6 +183,7 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(),
     //Method to generate List of data using RecyclerView with custom com.project.retrofit.adapter*//*
     override fun generateMoreUsers(users: List<User>) {
         adapter.addAll(users)
+        //mainBinding.root.customRecyclerView.smoothScrollToPosition(adapter.itemCount-2)
     }
 
     override fun createPresenter(): MainPresenter {

@@ -12,6 +12,7 @@ import com.jeff.gitusers.utilities.rx.RxSchedulerUtils
 import io.reactivex.*
 import io.reactivex.disposables.Disposable
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class DefaultMainPresenter @Inject
@@ -40,9 +41,7 @@ constructor(
                         users = t as MutableList<User>
                         view.setSearchQueryListener(users)
                         view.generateInitialUsers(t)
-                        view.showToast("Data loaded Remotely")
-                    } else {
-                        view.showLoadingDataFailed()
+                        view.showMessage("${t.size} Users loaded remotely.")
                     }
                     dispose()
                 }
@@ -57,8 +56,10 @@ constructor(
                     e.printStackTrace()
 
                     view.hideProgress()
+                    view.showMessage(e.message!!)
 
                     if (e is NoInternetException) {
+                        view.showMessage(e.message!! + ", Cached data will be loaded.")
                         loadUsersLocally()
                     } else {
                         dispose()
@@ -78,9 +79,7 @@ constructor(
                     users.addAll(t as MutableList<User>)
                     view.setSearchQueryListener(users)
                     view.generateMoreUsers(t)
-                    view.showToast("Data loaded Remotely")
-                } else {
-                    view.showLoadingDataFailed()
+                    view.showMessage("${t.size} more Users loaded remotely.")
                 }
                 dispose()
             }
@@ -96,6 +95,7 @@ constructor(
                 e.printStackTrace()
 
                 view.hideProgress()
+                view.showMessage(e.message!!)
 
                 if (e is NoInternetException) {
                     //getPhotosFromLocal()
@@ -109,6 +109,7 @@ constructor(
 
     fun loadUsersLocally(){
         loader.loadUsersLocally()
+            .delay(3 ,TimeUnit.SECONDS)
             .compose(schedulerUtils.forSingle())
             .subscribe(object : SingleObserver<List<User>>{
                 override fun onSubscribe(d: Disposable) {
@@ -122,11 +123,11 @@ constructor(
                     view.hideProgress()
 
                     if (t.isNotEmpty()) {
-                        view.showToast("Data loaded Locally")
                         view.setSearchQueryListener(t)
                         view.generateInitialUsers(t)
+                        view.showMessage("${t.size} cached data loaded.")
                     } else {
-                        view.showLoadingDataFailed()
+                        view.showMessage("No existing cached data.")
                     }
                     dispose()
                 }
@@ -135,6 +136,7 @@ constructor(
                     Timber.d("==q Load Photos Failed $e")
 
                     view.hideProgress()
+                    view.showMessage(e.message!!)
                     dispose()
 
                 }
