@@ -1,6 +1,9 @@
 package com.jeff.gitusers.android.base.extension
 
 import android.app.Activity
+import android.graphics.ColorMatrix
+import android.graphics.ColorMatrixColorFilter
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.jeff.gitusers.R
@@ -64,5 +67,19 @@ fun Activity.longToast(message: String) {
 
 fun Activity.shortToast(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+}
+
+fun ImageView.invertColor() {
+    val invertMX = floatArrayOf(
+        -1.0f, 0.0f, 0.0f, 0.0f, 255.0f,
+        0.0f, -1.0f, 0.0f, 0.0f, 255.0f,
+        0.0f, 0.0f, -1.0f, 0.0f, 255.0f,
+        0.0f, 0.0f, 0.0f, 1.0f, 0.0f
+    )
+
+    val invertCM = ColorMatrix(invertMX)
+
+    val filter = ColorMatrixColorFilter(invertCM)
+    this.colorFilter = filter
 }
 
