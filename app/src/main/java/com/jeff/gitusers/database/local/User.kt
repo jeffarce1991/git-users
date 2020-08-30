@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
-@Entity(tableName = Photo.TABLE_NAME)
+@Entity(tableName = User.TABLE_NAME)
 data class User constructor(
                  @ColumnInfo(name = "id")
                  @PrimaryKey(autoGenerate = true) var id: Int,
