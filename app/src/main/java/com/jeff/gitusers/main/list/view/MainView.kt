@@ -9,6 +9,7 @@ interface MainView : MvpView {
      fun showProgress()
      fun showProgressRemote()
      fun showProgressLocal()
+     fun showMessage(message: String)
 
      fun showLoadingDataFailed()
      fun showToast(message: String)

@@ -14,6 +14,7 @@ import androidx.core.view.MenuItemCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.hannesdorfmann.mosby.mvp.MvpActivity
 import com.jeff.gitusers.BuildConfig
 import com.jeff.gitusers.R
@@ -200,6 +201,13 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(),
         /*invokeSimpleDialog("Project420",
             "OK",
             "List is empty or null.")*/
+    }
+
+    override fun showMessage(message: String) {
+        Snackbar.make(mainBinding.coordLayout,
+            message,
+            Snackbar.LENGTH_SHORT)
+            .show()
     }
 
     override fun showToast(message: String) {
