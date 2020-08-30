@@ -1,14 +1,12 @@
-package com.jeff.gitusers.main.presenter
+package com.jeff.gitusers.main.list.presenter
 
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter
 import com.jeff.gitusers.database.local.Photo
 import com.jeff.gitusers.database.local.User
-import com.jeff.gitusers.database.usecase.local.loader.PhotoLocalLoader
-import com.jeff.gitusers.database.usecase.local.saver.PhotoLocalSaver
 import com.jeff.gitusers.webservices.exception.NoInternetException
 import com.jeff.gitusers.webservices.internet.RxInternet
-import com.jeff.gitusers.main.view.MainView
-import com.jeff.gitusers.supplychain.photo.UserLoader
+import com.jeff.gitusers.main.list.view.MainView
+import com.jeff.gitusers.supplychain.user.UserLoader
 import com.jeff.gitusers.webservices.dto.PhotoDto
 import com.jeff.gitusers.utilities.rx.RxSchedulerUtils
 import io.reactivex.*
@@ -18,9 +16,7 @@ import javax.inject.Inject
 
 class DefaultMainPresenter @Inject
 constructor(
-    private val internet: RxInternet,
-    private val localLoader: PhotoLocalLoader,
-    private val localSaver: PhotoLocalSaver,
+    private val rxInternet: RxInternet,
     private val schedulerUtils: RxSchedulerUtils,
     private val loader: UserLoader
 ) : MvpBasePresenter<MainView>(),
@@ -30,15 +26,19 @@ constructor(
 
     lateinit var disposable: Disposable
 
+    lateinit var users: MutableList<User>
+
     override fun loadInitialUsers() {
-        internet.isConnected()
-            .andThen(loader.loadInitialUsers())
+        rxInternet.isConnected()
+            .andThen(loader.loadInitialUsersRemotely())
             .compose(schedulerUtils.forSingle())
             .subscribe(object : SingleObserver<List<User>>{
                 override fun onSuccess(t: List<User>) {
                     Timber.d("==q onError $t" )
                     view.hideProgress()
                     if (t.isNotEmpty()) {
+                        users = t as MutableList<User>
+                        view.setSearchQueryListener(users)
                         view.generateInitialUsers(t)
                         view.showToast("Data loaded Remotely")
                     } else {
@@ -59,7 +59,7 @@ constructor(
                     view.hideProgress()
 
                     if (e is NoInternetException) {
-                        getPhotosFromLocal()
+                        loadUsersLocally()
                     } else {
                         dispose()
                     }
@@ -67,14 +67,16 @@ constructor(
             })
     }
 
-    override fun loadMoreUsers(fromId: Int) {internet.isConnected()
-        .andThen(loader.loadMoreUsers(fromId))
+    override fun loadMoreUsers(fromId: Int) {
+        loader.loadMoreUsers(fromId)
         .compose(schedulerUtils.forSingle())
         .subscribe(object : SingleObserver<List<User>>{
             override fun onSuccess(t: List<User>) {
                 Timber.d("==q loadMoreUsers onSuccess $t" )
                 view.hideProgress()
                 if (t.isNotEmpty()) {
+                    users.addAll(t as MutableList<User>)
+                    view.setSearchQueryListener(users)
                     view.generateMoreUsers(t)
                     view.showToast("Data loaded Remotely")
                 } else {
@@ -96,64 +98,33 @@ constructor(
                 view.hideProgress()
 
                 if (e is NoInternetException) {
-                    getPhotosFromLocal()
+                    //getPhotosFromLocal()
                 } else {
-                    dispose()
+                    //dispose()
                 }
+                dispose()
             }
         })
     }
 
-    override fun getPhoto(id: Int) {
-            /*internet.isConnected()
-                .andThen(getApi().loadPhotoById(id))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : SingleObserver<Response<PhotoDto>> {
-
-                    override fun onSubscribe(d: Disposable) {
-                        view.showProgress()
-
-                        disposable = d
-                        Timber.d("==q onSubscribe")
-                    }
-
-                    override fun onSuccess(t: Response<PhotoDto>) {
-                        view.hideProgress()
-                        view.generateDataList(mapPhotoDtosToPhotos(listOf(t.body()!!)))
-
-                        dispose()
-                        Timber.d("==q onSuccess")
-                    }
-                    override fun onError(e: Throwable) {
-                        view.hideProgress()
-
-                        dispose()
-                        Timber.e(e)
-                        Timber.d("==q onError")
-                        e.printStackTrace()
-                    }
-                })*/
-    }
-
-
-    fun getPhotosFromLocal(){
-        /*loader.loadAllFromLocal()
+    fun loadUsersLocally(){
+        loader.loadUsersLocally()
             .compose(schedulerUtils.forSingle())
-            .subscribe(object : SingleObserver<List<Photo>>{
+            .subscribe(object : SingleObserver<List<User>>{
                 override fun onSubscribe(d: Disposable) {
                     disposable = d
                     view.showProgress()
                 }
 
-                override fun onSuccess(t: List<Photo>) {
+                override fun onSuccess(t: List<User>) {
                     Timber.d("==q loadAll onSuccess ${t.size}")
 
                     view.hideProgress()
 
                     if (t.isNotEmpty()) {
                         view.showToast("Data loaded Locally")
-                        view.generateDataList(t)
+                        view.setSearchQueryListener(t)
+                        view.generateInitialUsers(t)
                     } else {
                         view.showLoadingDataFailed()
                     }
@@ -167,7 +138,7 @@ constructor(
                     dispose()
 
                 }
-            })*/
+            })
     }
 
     private fun mapPhotoDtosToPhotos(photoDtos: List<PhotoDto>): List<Photo> {
