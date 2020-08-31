@@ -35,7 +35,7 @@ constructor(
             .compose(schedulerUtils.forSingle())
             .subscribe(object : SingleObserver<List<User>>{
                 override fun onSuccess(t: List<User>) {
-                    Timber.d("==q onError $t" )
+                    Timber.d("==q onSuccess $t" )
                     view.hideProgress()
                     if (t.isNotEmpty()) {
                         users = t as MutableList<User>
