@@ -1,9 +1,11 @@
 package com.jeff.gitusers.supplychain.user
 
 import com.jeff.gitusers.database.local.User
+import com.jeff.gitusers.database.local.UserDetails
 import com.jeff.gitusers.database.usecase.local.loader.UserLocalLoader
 import com.jeff.gitusers.database.usecase.local.saver.UserLocalSaver
 import com.jeff.gitusers.main.mapper.UserDtoToUserMapper
+import com.jeff.gitusers.webservices.dto.UserDetailsDto
 import com.jeff.gitusers.webservices.internet.RxInternet
 import com.jeff.gitusers.webservices.usecase.loader.UserRemoteLoader
 import io.reactivex.Observable
@@ -43,6 +45,33 @@ constructor(private val remoteLoader: UserRemoteLoader,
             .toList()
             .flatMap { photos -> Single.fromObservable(localSaver.saveAll(photos)) }
             .flatMap { photos -> Single.just(photos) }
+    }
+
+    override fun loadUserDetailsRemotely(login: String): Single<UserDetails> {
+        return remoteLoader.loadUserDetails(login)
+            .map { mapUserDetailsDtoToUserDetails(it) }
+            //.flatMap { photos -> Single.fromObservable(localSaver.saveAll(photos)) }
+            .flatMap { Single.just(it) }
+    }
+
+    private fun mapUserDetailsDtoToUserDetails(dto: UserDetailsDto): UserDetails {
+        return UserDetails(
+            dto.id,
+            dto.login,
+            dto.name,
+            dto.company,
+            dto.blog,
+            dto.location,
+            dto.email,
+            dto.bio,
+            dto.twitterUsername,
+            dto.publicRepos,
+            dto.publicGists,
+            dto.followers,
+            dto.following,
+            dto.createdAt,
+            dto.updatedAt
+        )
     }
 
 }
