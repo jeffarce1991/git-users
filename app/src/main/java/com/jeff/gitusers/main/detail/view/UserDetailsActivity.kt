@@ -10,6 +10,7 @@ import com.hannesdorfmann.mosby.mvp.MvpActivity
 import com.jeff.gitusers.R
 import com.jeff.gitusers.android.base.extension.formatNumberToAcronym
 import com.jeff.gitusers.android.base.extension.hide
+import com.jeff.gitusers.database.local.Notes
 import com.jeff.gitusers.database.local.UserDetails
 import com.jeff.gitusers.databinding.ActivityDetailsBinding
 import com.jeff.gitusers.main.detail.presenter.UserDetailsPresenter
@@ -97,6 +98,10 @@ class UserDetailsActivity : MvpActivity<UserDetailsView, UserDetailsPresenter>()
             binding.root.location.text = it.location
             binding.root.company.text = it.company
             binding.root.blog.text = it.blog }
+    }
+
+    override fun setNotes(notes: Notes) {
+        binding.root.notes.setText(notes.content)
     }
 
     override fun showMessage(message: String) {
