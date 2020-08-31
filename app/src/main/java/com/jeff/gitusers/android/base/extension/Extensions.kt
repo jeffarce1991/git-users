@@ -3,6 +3,7 @@ package com.jeff.gitusers.android.base.extension
 import android.app.Activity
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
+import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -67,6 +68,14 @@ fun Activity.longToast(message: String) {
 
 fun Activity.shortToast(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+}
+
+fun View.hide() {
+    this.visibility = View.GONE
+}
+
+fun View.show() {
+    this.visibility = View.VISIBLE
 }
 
 fun ImageView.invertColor() {
