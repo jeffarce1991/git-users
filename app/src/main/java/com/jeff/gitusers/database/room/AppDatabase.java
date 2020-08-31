@@ -12,6 +12,7 @@ import com.jeff.gitusers.database.room.converter.UserConverter;
 import com.jeff.gitusers.database.room.converter.UserDetailsConverter;
 import com.jeff.gitusers.database.room.dao.PhotoDao;
 import com.jeff.gitusers.database.room.dao.UserDao;
+import com.jeff.gitusers.database.room.dao.UserDetailsDao;
 
 @Database(
         entities = {
@@ -28,4 +29,5 @@ import com.jeff.gitusers.database.room.dao.UserDao;
         })
 public abstract class AppDatabase extends RoomDatabase {
         public abstract UserDao userDao();
+        public abstract UserDetailsDao userDetailsDao();
 }
