@@ -1,5 +1,6 @@
 package com.jeff.gitusers.webservices.api.git
 
+import com.jeff.gitusers.webservices.dto.UserDetailsDto
 import com.jeff.gitusers.webservices.dto.UserDto
 import io.reactivex.Single
 import retrofit2.Response
@@ -17,5 +18,5 @@ interface UsersApi {
 
 
     @GET("users/{login}")
-    fun loadUserDetails(@Path("login") id: String): Single<Response<UserDto>>
+    fun loadUserDetails(@Path("login") id: String): Single<Response<UserDetailsDto>>
 }
