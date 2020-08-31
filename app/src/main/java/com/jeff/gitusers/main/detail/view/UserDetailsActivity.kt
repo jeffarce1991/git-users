@@ -11,10 +11,10 @@ import com.jeff.gitusers.R
 import com.jeff.gitusers.android.base.extension.formatNumberToAcronym
 import com.jeff.gitusers.android.base.extension.hide
 import com.jeff.gitusers.database.local.UserDetails
-import com.jeff.gitusers.databinding.ActivityDetailBinding
+import com.jeff.gitusers.databinding.ActivityDetailsBinding
 import com.jeff.gitusers.main.detail.presenter.UserDetailsPresenter
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.content_scrolling.view.*
+import kotlinx.android.synthetic.main.content_details.view.*
 import javax.inject.Inject
 
 class UserDetailsActivity : MvpActivity<UserDetailsView, UserDetailsPresenter>(),
@@ -43,25 +43,25 @@ class UserDetailsActivity : MvpActivity<UserDetailsView, UserDetailsPresenter>()
     @Inject
     internal lateinit var userDetailsPresenter : UserDetailsPresenter
 
-    private lateinit var binding : ActivityDetailBinding
+    private lateinit var binding : ActivityDetailsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail)
+        setContentView(R.layout.activity_details)
         setSupportActionBar(findViewById(R.id.toolbar))
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_detail)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_details)
 
         setupToolbar()
 
 
         userDetailsPresenter.loadUserDetails(getUserName()!!, getId()!!)
 
-        binding.fab.setOnClickListener { view ->
+        /*binding.fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
             userDetailsPresenter.loadUserDetails(getUserName()!!, getId()!!)
-        }
+        }*/
     }
 
     private fun getUserName(): String? = intent.getStringExtra(EXTRA_LOGIN)

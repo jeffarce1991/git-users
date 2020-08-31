@@ -34,7 +34,7 @@
                 android:id="@+id/header_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_launcher_background"
+                android:background="@color/colorPrimary"
                 android:scaleType="centerCrop"
                 app:layout_collapseMode="none"
                 app:layout_constraintTop_toTopOf="parent"
@@ -51,16 +51,16 @@
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_scrolling" />
+    <include layout="@layout/content_details" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <!--<com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        app:srcCompat="@android:drawable/ic_dialog_email" />-->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
