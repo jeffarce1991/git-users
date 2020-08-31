@@ -46,7 +46,7 @@ class DefaultApiFactory implements ApiFactory {
     private Single<Retrofit> intoRetrofit(OkHttpClient client) {
         return Single.fromCallable(
             () -> new Retrofit.Builder()
-                      .baseUrl(Constants.Gateways.JSONPLACEHOLDER)
+                      .baseUrl(Constants.Gateways.GIT)
                       .client(client)
                       .addConverterFactory(GsonConverterFactory.create())
                       .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

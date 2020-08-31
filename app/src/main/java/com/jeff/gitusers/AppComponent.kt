@@ -4,7 +4,7 @@ import android.app.Application
 import com.jeff.gitusers.database.DatabaseModule
 import com.jeff.gitusers.webservices.internet.RxInternetModule
 import com.jeff.gitusers.main.MainModule
-import com.jeff.gitusers.supplychain.photo.PhotoUseCaseModule
+import com.jeff.gitusers.supplychain.user.UserUseCaseModule
 import com.jeff.gitusers.utilities.UtilityModule
 import com.jeff.gitusers.webservices.api.ApiModule
 import com.jeff.gitusers.webservices.usecase.WebServiceUseCaseModule
@@ -22,7 +22,7 @@ import javax.inject.Singleton
     DatabaseModule::class,
     ApiModule::class,
     WebServiceUseCaseModule::class,
-    PhotoUseCaseModule::class])
+    UserUseCaseModule::class])
 @Singleton
 interface AppComponent {
 

@@ -4,7 +4,9 @@ import android.app.Application
 import androidx.room.Room
 import com.jeff.gitusers.R
 import com.jeff.gitusers.database.room.AppDatabase
-import com.jeff.gitusers.database.room.dao.PhotoDao
+import com.jeff.gitusers.database.room.dao.NotesDao
+import com.jeff.gitusers.database.room.dao.UserDao
+import com.jeff.gitusers.database.room.dao.UserDetailsDao
 import com.jeff.gitusers.database.usecase.local.LocalUseCaseModule
 import dagger.Module
 import dagger.Provides
@@ -25,7 +27,19 @@ class DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideAssignmentDao(appDatabase: AppDatabase): PhotoDao {
-        return appDatabase.photoDao()
+    fun provideUserDao(appDatabase: AppDatabase): UserDao {
+        return appDatabase.userDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideUserDetailsDao(appDatabase: AppDatabase): UserDetailsDao {
+        return appDatabase.userDetailsDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideNotesDao(appDatabase: AppDatabase): NotesDao {
+        return appDatabase.notesDao()
     }
 }
