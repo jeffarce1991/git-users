@@ -14,9 +14,8 @@ import com.jeff.gitusers.R
 import com.jeff.gitusers.adapter.UserListAdapter.UserViewHolder
 import com.jeff.gitusers.android.base.extension.invertColor
 import com.jeff.gitusers.database.local.User
-import com.jeff.gitusers.databinding.ItemLoadingBinding
 import com.jeff.gitusers.databinding.ItemUserBinding
-import com.jeff.gitusers.main.detail.view.UserDetailActivity
+import com.jeff.gitusers.main.detail.view.UserDetailsActivity
 
 
 internal class UserListAdapter(
@@ -55,9 +54,10 @@ internal class UserListAdapter(
         invertEvery4thItem(holder.coverImage, position)
 
         holder.itemLayout.setOnClickListener {
-            val intent = UserDetailActivity.getStartIntent(
+            val intent = UserDetailsActivity.getStartIntent(
                 context,
                 item.id,
+                item.login,
                 item.avatarUrl
             )
             context.startActivity(intent)
