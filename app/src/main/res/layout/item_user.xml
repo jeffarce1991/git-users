@@ -31,7 +31,7 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:contentDescription="@string/content_description"
-            android:src="@drawable/ic_launcher_background"
+            android:src="@drawable/ic_baseline_image_24"
             android:layout_margin="@dimen/screen_margin"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
