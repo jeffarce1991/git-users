@@ -18,7 +18,7 @@ import com.jeff.gitusers.database.room.dao.UserDao;
                 User.class,
                 UserDetails.class
         },
-        version = 14,
+        version = 15,
         exportSchema = false
 )
 

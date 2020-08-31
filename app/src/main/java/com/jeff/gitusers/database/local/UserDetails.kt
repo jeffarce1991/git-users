@@ -26,20 +26,20 @@ data class UserDetails constructor(
                  @ColumnInfo(name = "twitter_username")
                  var twitterUsername: String? = null,
                  @ColumnInfo(name = "public_repos")
-                 var public_repos: String? = null,
+                 var public_repos: Int? = null,
                  @ColumnInfo(name = "public_gists")
-                 var public_gists: String? = null,
+                 var public_gists: Int? = null,
                  @ColumnInfo(name = "followers")
-                 var followers: String? = null,
+                 var followers: Int? = null,
                  @ColumnInfo(name = "following")
-                 var following: String? = null,
+                 var following: Int? = null,
                  @ColumnInfo(name = "created_at")
                  var created_at: String? = null,
                  @ColumnInfo(name = "updated_at")
                  var updated_at: String? = null
                 ) {
 
-    constructor() : this(-1, "", "", "", "", "", "", "", "", "", "", "", "", "", "")
+    constructor() : this(-1, "", "", "", "", "", "", "", "", -1, -1, -1, -1, "", "")
 
     companion object {
 
