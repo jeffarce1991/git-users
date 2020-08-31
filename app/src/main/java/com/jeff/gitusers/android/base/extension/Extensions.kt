@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.jeff.gitusers.R
+import kotlin.math.abs
 
 fun Activity.invokeSimpleDialog(title: String,
                                 positiveButtonText: String,
@@ -90,5 +91,19 @@ fun ImageView.invertColor() {
 
     val filter = ColorMatrixColorFilter(invertCM)
     this.colorFilter = filter
+}
+
+fun formatNumberToAcronym(n : Int): String {
+    return when {
+        abs(n / 1000000) > 1 -> {
+            (n / 1000000).toString() + "M"
+        }
+        abs(n / 1000) > 1 -> {
+            (n / 1000).toString() + "K"
+        }
+        else -> {
+            n.toString()
+        }
+    }
 }
 
