@@ -57,12 +57,13 @@ class UserDetailsActivity : MvpActivity<UserDetailsView, UserDetailsPresenter>()
 
 
         userDetailsPresenter.loadUserDetails(getUserName()!!, getId()!!)
-
-        /*binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-            userDetailsPresenter.loadUserDetails(getUserName()!!, getId()!!)
-        }*/
+        userDetailsPresenter.loadNotes(getId()!!)
+        binding.root.save_notes.setOnClickListener {
+            userDetailsPresenter.updateNotes(
+                binding.root.notes.text.toString(),
+                getId()!!
+            )
+        }
     }
 
     private fun getUserName(): String? = intent.getStringExtra(EXTRA_LOGIN)
@@ -81,7 +82,7 @@ class UserDetailsActivity : MvpActivity<UserDetailsView, UserDetailsPresenter>()
             .with(this)
             .load(intent.getStringExtra(EXTRA_AVATAR_URL))
             .centerCrop()
-            .placeholder(R.drawable.ic_launcher_background)
+            .placeholder(R.drawable.ic_launcher_background_gray)
             .into(binding.headerImage)
     }
 
