@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.hannesdorfmann.mosby.mvp.MvpActivity
 import com.jeff.gitusers.R
 import com.jeff.gitusers.android.base.extension.formatNumberToAcronym
+import com.jeff.gitusers.android.base.extension.hide
 import com.jeff.gitusers.database.local.UserDetails
 import com.jeff.gitusers.databinding.ActivityDetailBinding
 import com.jeff.gitusers.main.detail.presenter.UserDetailsPresenter
@@ -93,5 +94,23 @@ class UserDetailsActivity : MvpActivity<UserDetailsView, UserDetailsPresenter>()
         binding.root.company.text = userDetails.company
         binding.root.blog.text = userDetails.blog
     }
+
+    override fun startShimmerAnimations() {
+        binding.root.shimmer_details_container.startShimmerAnimation()
+        binding.root.shimmer_follows_container.startShimmerAnimation()
+    }
+
+    override fun hideShimmerPlaceholders() {
+        binding.root.followers_shimmer.hide()
+        binding.root.following_shimmer.hide()
+        binding.root.name_shimmer.hide()
+        binding.root.name_shimmer.hide()
+        binding.root.company_shimmer.hide()
+        binding.root.blog_shimmer.hide()
+    }
+
+    override fun stopShimmerAnimations() {
+        binding.root.shimmer_details_container.stopShimmerAnimation();
+        binding.root.shimmer_follows_container.stopShimmerAnimation();
     }
 }

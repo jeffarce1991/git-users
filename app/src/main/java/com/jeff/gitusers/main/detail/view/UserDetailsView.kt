@@ -6,4 +6,8 @@ import com.jeff.gitusers.database.local.UserDetails
 interface UserDetailsView : MvpView {
     fun setUserDetails(userDetails: UserDetails)
 
+    fun stopShimmerAnimations()
+    fun startShimmerAnimations()
+    fun hideShimmerPlaceholders()
+
 }

@@ -32,16 +32,19 @@ constructor(
                     Timber.d("==q onSuccess loadUserDetails $t")
 
                     view.setUserDetails(t)
-
+                    view.stopShimmerAnimations()
+                    view.hideShimmerPlaceholders()
                     dispose()
                 }
 
                 override fun onSubscribe(d: Disposable) {
+                    view.startShimmerAnimations()
                     disposable = d
                 }
 
                 override fun onError(e: Throwable) {
                     Timber.e("==q onError $e")
+                    view.stopShimmerAnimations()
                     dispose()
                 }
             })
