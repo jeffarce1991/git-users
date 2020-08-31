@@ -6,14 +6,13 @@ import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
-import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.hannesdorfmann.mosby.mvp.MvpActivity
 import com.jeff.gitusers.R
+import com.jeff.gitusers.android.base.extension.formatNumberToAcronym
 import com.jeff.gitusers.database.local.UserDetails
 import com.jeff.gitusers.databinding.ActivityDetailBinding
 import com.jeff.gitusers.main.detail.presenter.UserDetailsPresenter
 import dagger.android.AndroidInjection
-import dagger.android.AndroidInjector
 import kotlinx.android.synthetic.main.content_scrolling.view.*
 import javax.inject.Inject
 
@@ -87,7 +86,12 @@ class UserDetailsActivity : MvpActivity<UserDetailsView, UserDetailsPresenter>()
     }
 
     override fun setUserDetails(userDetails: UserDetails) {
-        supportActionBar!!.title = userDetails.name
+        binding.root.followers.text = formatNumberToAcronym(userDetails.followers!!)
+        binding.root.following.text = formatNumberToAcronym(userDetails.following!!)
+
         binding.root.name.text = userDetails.name
+        binding.root.company.text = userDetails.company
+        binding.root.blog.text = userDetails.blog
+    }
     }
 }
