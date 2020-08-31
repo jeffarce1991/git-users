@@ -109,7 +109,7 @@ constructor(
 
     fun loadUsersLocally(){
         loader.loadUsersLocally()
-            .delay(3 ,TimeUnit.SECONDS)
+            .delay(2500 ,TimeUnit.MILLISECONDS)
             .compose(schedulerUtils.forSingle())
             .subscribe(object : SingleObserver<List<User>>{
                 override fun onSubscribe(d: Disposable) {
@@ -141,21 +141,6 @@ constructor(
 
                 }
             })
-    }
-
-    private fun mapPhotoDtosToPhotos(photoDtos: List<PhotoDto>): List<Photo> {
-        val photos = mutableListOf<Photo>()
-        for (photoDto in photoDtos) {
-            val photo = Photo(
-                photoDto.id,
-                photoDto.albumId,
-                photoDto.title,
-                photoDto.url,
-                photoDto.thumbnailUrl
-            )
-            photos.add(photo)
-        }
-        return photos
     }
 
     override fun attachView(view: MainView) {
