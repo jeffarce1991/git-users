@@ -8,4 +8,9 @@ abstract class UserUseCaseModule {
 
     @Binds
     abstract fun bindUserLoader(defaultUserLoader: DefaultUserLoader): UserLoader
+
+    @Binds
+    abstract fun bindUserSaver(defaultUserSaver: DefaultUserSaver): UserSaver
+
+
 }
