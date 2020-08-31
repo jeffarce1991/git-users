@@ -1,6 +1,8 @@
 package com.jeff.gitusers.adapter
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -48,7 +50,8 @@ internal class UserListAdapter(
             .with(context)
             .load(item.avatarUrl)
             .centerCrop()
-            .placeholder(R.drawable.ic_launcher_background)
+            .placeholder(R.drawable.ic_baseline_image_24)
+            .fallback(R.drawable.ic_baseline_broken_image_24)
             .into(holder.coverImage)
 
         invertEvery4thItem(holder.coverImage, position)
