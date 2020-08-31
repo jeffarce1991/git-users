@@ -13,4 +13,5 @@ interface UserLoader {
     fun loadInitialUsersRemotely(): Single<List<User>>
 
     fun loadUserDetailsRemotely(login: String): Single<UserDetails>
+    fun loadUserDetailsLocally(id: Int): Single<UserDetails>
 }

@@ -2,7 +2,9 @@ package com.jeff.gitusers.supplychain.user
 
 import com.jeff.gitusers.database.local.User
 import com.jeff.gitusers.database.local.UserDetails
+import com.jeff.gitusers.database.usecase.local.loader.UserDetailsLocalLoader
 import com.jeff.gitusers.database.usecase.local.loader.UserLocalLoader
+import com.jeff.gitusers.database.usecase.local.saver.UserDetailsLocalSaver
 import com.jeff.gitusers.database.usecase.local.saver.UserLocalSaver
 import com.jeff.gitusers.main.mapper.UserDtoToUserMapper
 import com.jeff.gitusers.webservices.dto.UserDetailsDto
@@ -15,7 +17,9 @@ import javax.inject.Inject
 class DefaultUserLoader @Inject
 constructor(private val remoteLoader: UserRemoteLoader,
             private val localLoader: UserLocalLoader,
-            private val localSaver: UserLocalSaver,
+            private val localUserSaver: UserLocalSaver,
+            private val localDetailsSaver: UserDetailsLocalSaver,
+            private val localDetailsLoader: UserDetailsLocalLoader,
             private val rxInternet: RxInternet): UserLoader{
 
     override fun loadUsers(): Single<List<User>> {
@@ -29,13 +33,13 @@ constructor(private val remoteLoader: UserRemoteLoader,
             .flatMapObservable { list -> Observable.fromIterable(list) }
             .flatMap(UserDtoToUserMapper())
             .toList()
-            .flatMap { photos -> Single.fromObservable(localSaver.saveAll(photos)) }
-            .flatMap { photos -> Single.just(photos) }
+            .flatMap { Single.fromObservable(localUserSaver.saveAll(it)) }
+            .flatMap { Single.just(it) }
     }
 
     override fun loadUsersLocally(): Single<List<User>> {
         return localLoader.loadAll()
-            .flatMap { users -> Single.just(users)}
+            .flatMap { Single.just(it)}
     }
 
     override fun loadInitialUsersRemotely(): Single<List<User>> {
@@ -43,14 +47,19 @@ constructor(private val remoteLoader: UserRemoteLoader,
             .flatMapObservable { list -> Observable.fromIterable(list) }
             .flatMap(UserDtoToUserMapper())
             .toList()
-            .flatMap { photos -> Single.fromObservable(localSaver.saveAll(photos)) }
-            .flatMap { photos -> Single.just(photos) }
+            .flatMap { Single.fromObservable(localUserSaver.saveAll(it)) }
+            .flatMap { Single.just(it) }
     }
 
     override fun loadUserDetailsRemotely(login: String): Single<UserDetails> {
         return remoteLoader.loadUserDetails(login)
             .map { mapUserDetailsDtoToUserDetails(it) }
-            //.flatMap { photos -> Single.fromObservable(localSaver.saveAll(photos)) }
+            .flatMap { Single.fromObservable(localDetailsSaver.save(it)) }
+            .flatMap { Single.just(it) }
+    }
+
+    override fun loadUserDetailsLocally(id: Int): Single<UserDetails> {
+        return localDetailsLoader.loadById(id)
             .flatMap { Single.just(it) }
     }
 
