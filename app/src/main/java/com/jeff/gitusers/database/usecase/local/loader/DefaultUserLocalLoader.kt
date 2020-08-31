@@ -1,8 +1,6 @@
 package com.jeff.gitusers.database.usecase.local.loader
 
-import com.jeff.gitusers.database.local.Photo
 import com.jeff.gitusers.database.local.User
-import com.jeff.gitusers.database.room.dao.PhotoDao
 import com.jeff.gitusers.database.room.dao.UserDao
 import io.reactivex.Single
 import javax.inject.Inject

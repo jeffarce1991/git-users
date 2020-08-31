@@ -1,7 +1,6 @@
 package com.jeff.gitusers.database.room.dao
 
 import androidx.room.*
-import com.jeff.gitusers.database.local.Photo
 import com.jeff.gitusers.database.local.User
 
 @Dao
