@@ -2,6 +2,7 @@ package com.jeff.gitusers.main.detail.view
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import androidx.databinding.DataBindingUtil
@@ -82,7 +83,7 @@ class UserDetailsActivity : MvpActivity<UserDetailsView, UserDetailsPresenter>()
             .with(this)
             .load(intent.getStringExtra(EXTRA_AVATAR_URL))
             .centerCrop()
-            .placeholder(R.drawable.ic_launcher_background_gray)
+            .placeholder(ColorDrawable(resources.getColor(R.color.colorPrimary)))
             .into(binding.headerImage)
     }
 
