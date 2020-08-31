@@ -5,5 +5,6 @@ import com.jeff.gitusers.main.detail.view.UserDetailsView
 
 interface UserDetailsPresenter : MvpPresenter<UserDetailsView> {
 
-    fun loadUserDetails(login: String)
+    fun loadUserDetails(login: String, id: Int)
+    fun loadUserDetailsLocally(id: Int)
 }
