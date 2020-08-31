@@ -9,5 +9,6 @@ interface UserDetailsView : MvpView {
     fun stopShimmerAnimations()
     fun startShimmerAnimations()
     fun hideShimmerPlaceholders()
+    fun showMessage(message: String)
 
 }

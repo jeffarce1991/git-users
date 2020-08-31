@@ -93,6 +93,11 @@ class UserDetailsActivity : MvpActivity<UserDetailsView, UserDetailsPresenter>()
         binding.root.name.text = userDetails.name
         binding.root.company.text = userDetails.company
         binding.root.blog.text = userDetails.blog
+    override fun showMessage(message: String) {
+        Snackbar.make(binding.coordLayout,
+            message,
+            Snackbar.LENGTH_SHORT)
+            .show()
     }
 
     override fun startShimmerAnimations() {
