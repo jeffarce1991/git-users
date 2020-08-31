@@ -17,10 +17,10 @@ class UserDetailsDto(
     @field:SerializedName("email") var email: String? = null,
     @field:SerializedName("bio") var bio: String? = null,
     @field:SerializedName("twitter_username") var twitterUsername: String? = null,
-    @field:SerializedName("public_repos") var publicRepos: String? = null,
-    @field:SerializedName("public_gists") var publicGists: String? = null,
-    @field:SerializedName("followers") var followers: String? = null,
-    @field:SerializedName("following") var following: String? = null,
+    @field:SerializedName("public_repos") var publicRepos: Int? = null,
+    @field:SerializedName("public_gists") var publicGists: Int? = null,
+    @field:SerializedName("followers") var followers: Int? = null,
+    @field:SerializedName("following") var following: Int? = null,
     @field:SerializedName("created_at") var createdAt: String? = null,
     @field:SerializedName("updated_at") var updatedAt: String? = null
 )
