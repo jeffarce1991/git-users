@@ -55,15 +55,17 @@ class UserDetailsActivity : MvpActivity<UserDetailsView, UserDetailsPresenter>()
         setupToolbar()
 
 
-        userDetailsPresenter.loadUserDetails(getUserName()!!)
+        userDetailsPresenter.loadUserDetails(getUserName()!!, getId()!!)
+
         binding.fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
-            userDetailsPresenter.loadUserDetails(getUserName()!!)
+            userDetailsPresenter.loadUserDetails(getUserName()!!, getId()!!)
         }
     }
 
     private fun getUserName(): String? = intent.getStringExtra(EXTRA_LOGIN)
+    private fun getId(): Int? = intent.getIntExtra(EXTRA_ID, -1)
 
     private fun setupToolbar() {
         setSupportActionBar(binding.toolbar)
@@ -87,12 +89,16 @@ class UserDetailsActivity : MvpActivity<UserDetailsView, UserDetailsPresenter>()
     }
 
     override fun setUserDetails(userDetails: UserDetails) {
-        binding.root.followers.text = formatNumberToAcronym(userDetails.followers!!)
-        binding.root.following.text = formatNumberToAcronym(userDetails.following!!)
+        userDetails.let {
+            binding.root.followers.text = formatNumberToAcronym(it.followers!!)
+            binding.root.following.text = formatNumberToAcronym(it.following!!)
 
-        binding.root.name.text = userDetails.name
-        binding.root.company.text = userDetails.company
-        binding.root.blog.text = userDetails.blog
+            binding.root.name.text = it.name
+            binding.root.location.text = it.location
+            binding.root.company.text = it.company
+            binding.root.blog.text = it.blog }
+    }
+
     override fun showMessage(message: String) {
         Snackbar.make(binding.coordLayout,
             message,
@@ -109,7 +115,7 @@ class UserDetailsActivity : MvpActivity<UserDetailsView, UserDetailsPresenter>()
         binding.root.followers_shimmer.hide()
         binding.root.following_shimmer.hide()
         binding.root.name_shimmer.hide()
-        binding.root.name_shimmer.hide()
+        binding.root.location_shimmer.hide()
         binding.root.company_shimmer.hide()
         binding.root.blog_shimmer.hide()
     }
