@@ -1,18 +1,19 @@
 package com.jeff.gitusers.database.usecase.local
 
-import com.jeff.gitusers.database.usecase.local.loader.DefaultUserDetailsLocalLoader
-import com.jeff.gitusers.database.usecase.local.loader.DefaultUserLocalLoader
-import com.jeff.gitusers.database.usecase.local.loader.UserDetailsLocalLoader
-import com.jeff.gitusers.database.usecase.local.loader.UserLocalLoader
-import com.jeff.gitusers.database.usecase.local.saver.DefaultUserDetailsLocalSaver
-import com.jeff.gitusers.database.usecase.local.saver.DefaultUserLocalSaver
-import com.jeff.gitusers.database.usecase.local.saver.UserDetailsLocalSaver
-import com.jeff.gitusers.database.usecase.local.saver.UserLocalSaver
+import com.jeff.gitusers.database.usecase.local.loader.*
+import com.jeff.gitusers.database.usecase.local.saver.*
 import dagger.Binds
 import dagger.Module
 
 @Module
 interface LocalUseCaseModule {
+    @Binds
+    fun bindNotesLocalSaver(implementation: DefaultNotesLocalSaver): NotesLocalSaver
+
+    @Binds
+    fun bindNotesLocalLoader(implementation: DefaultNotesLocalLoader): NotesLocalLoader
+
+
     @Binds
     fun bindUserLocalLoader(implementation: DefaultUserLocalLoader): UserLocalLoader
 
