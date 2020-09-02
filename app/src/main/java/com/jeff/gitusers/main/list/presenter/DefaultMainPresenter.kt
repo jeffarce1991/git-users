@@ -2,6 +2,9 @@ package com.jeff.gitusers.main.list.presenter
 
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter
 import com.jeff.gitusers.database.local.User
+import com.jeff.gitusers.main.list.presenter.MainPresenter.Companion.REQUEST_LOAD_INITIAL_USERS
+import com.jeff.gitusers.main.list.presenter.MainPresenter.Companion.REQUEST_LOAD_MORE_USERS
+import com.jeff.gitusers.main.list.presenter.MainPresenter.Companion.REQUEST_LOAD_USERS_LOCALLY
 import com.jeff.gitusers.webservices.exception.NoInternetException
 import com.jeff.gitusers.webservices.internet.RxInternet
 import com.jeff.gitusers.main.list.view.MainView
@@ -21,19 +24,87 @@ constructor(
 ) : MvpBasePresenter<MainView>(),
     MainPresenter {
 
-    lateinit var view: MainView
 
-    lateinit var disposable: Disposable
+    lateinit var view: MainView
 
     lateinit var users: MutableList<User>
 
+    private var disposable: Disposable? = null
+    private var streamDisposable: Disposable? = null
+
+    private var queuedList = mutableListOf<Int>()
+    private var argList = ArrayList<Int>()
+
+    //Starts a stream that checkQueuedList every time.
+     override fun startStream() {
+        Single.timer(1, TimeUnit.SECONDS)
+            .compose(rxSchedulerUtils.forSingle())
+            .doOnSuccess{checkQueuedList()}
+            .doOnSubscribe { streamDisposable = it }
+            .repeat()
+            .subscribe()
+    }
+
+    //Invokes queued request until queuedList is empty.
+    private fun checkQueuedList() {
+        Timber.d("==x ${queuedList.size}")
+        if(queuedList.isNotEmpty()) {
+            isDisposed(disposable) { validateRequest() }
+        }
+    }
+
+    private fun validateRequest() {
+        if (argList.isEmpty()) {
+            invoke(queuedList[0])
+        } else {
+            invoke(queuedList[0], argList[0])
+            argList.removeAt(0)
+        }
+        queuedList.removeAt(0)
+    }
+
+    private fun invoke(method: Int) {
+        when (method) {
+            REQUEST_LOAD_INITIAL_USERS -> {
+                loadInitialUsers()
+            }
+            REQUEST_LOAD_USERS_LOCALLY -> {
+                loadUsersLocally()
+            }
+        }
+    }
+
+    private fun invoke(method: Int, params: Int) {
+        when (method) {
+            REQUEST_LOAD_MORE_USERS -> {
+                loadMoreUsers(params)
+            }
+        }
+    }
+
+    //Queue request
+    //Add requested method to requestList and queue it up.
+    //This method is invoked in Activity side.
+    override fun queue(request: Int) {
+        queuedList.add(request)
+    }
+
+    //Queue request with int parameter
+    //Add requested method to requestList and queue it up.
+    //This method is invoked in Activity side.
+    override fun queue(request: Int, arg: Int) {
+        queuedList.add(request)
+        argList.add(arg)
+    }
+
     override fun loadInitialUsers() {
-        rxInternet.isConnected()
+            rxInternet.isConnected()
+            .delay(2,TimeUnit.SECONDS)
             .andThen(loader.loadInitialUsersRemotely())
             .compose(rxSchedulerUtils.forSingle())
             .subscribe(object : SingleObserver<List<User>>{
                 override fun onSuccess(t: List<User>) {
-                    Timber.d("==q onSuccess $t" )
+                    Timber.d("==q onSuccess" )
                     view.hideProgress()
                     if (t.isNotEmpty()) {
                         users = t as MutableList<User>
@@ -45,6 +116,7 @@ constructor(
                 }
 
                 override fun onSubscribe(d: Disposable) {
+                    Timber.d("==q onSubscribed" )
                     view.showProgress()
                     disposable = d
                 }
@@ -64,51 +136,70 @@ constructor(
                     }
                 }
             })
+
+    }
+
+    private fun isDisposed(d: Disposable?, onDisposed: () -> Unit) {
+        d?.let {
+            when {
+                it.isDisposed -> {
+                    Timber.d("==x Invoking func now.")
+                    onDisposed()
+                }
+                else -> {
+                    Timber.d("==x Call dispose() first.")
+                }
+            }
+        }.run {
+            if (d == null) {
+                onDisposed()
+                Timber.d("==x disposable is null.")
+            }
+        }
     }
 
     override fun loadMoreUsers(fromId: Int) {
-        loader.loadMoreUsers(fromId)
-        .compose(rxSchedulerUtils.forSingle())
-        .subscribe(object : SingleObserver<List<User>>{
-            override fun onSuccess(t: List<User>) {
-                Timber.d("==q loadMoreUsers onSuccess $t" )
-                view.hideProgress()
-                if (t.isNotEmpty()) {
-                    users.addAll(t as MutableList<User>)
-                    view.setSearchQueryListener(users)
-                    view.generateMoreUsers(t)
-                    view.showMessage("${t.size} more Users loaded remotely.")
-                }
-                dispose()
-            }
+            loader.loadMoreUsers(fromId)
+                .compose(rxSchedulerUtils.forSingle())
+                .subscribe(object : SingleObserver<List<User>> {
+                    override fun onSuccess(t: List<User>) {
+                        Timber.d("==q loadMoreUsers onSuccess $t")
+                        view.hideProgress()
+                        if (t.isNotEmpty()) {
+                            users.addAll(t as MutableList<User>)
+                            view.setSearchQueryListener(users)
+                            view.generateMoreUsers(t)
+                            view.showMessage("${t.size} more Users loaded remotely.")
+                        }
+                        dispose()
+                    }
 
-            override fun onSubscribe(d: Disposable) {
-                Timber.d("==q onSubscribe" )
-                view.showProgress()
-                disposable = d
-            }
+                    override fun onSubscribe(d: Disposable) {
+                        Timber.d("==q onSubscribe")
+                        view.showProgress()
+                        disposable = d
+                    }
 
-            override fun onError(e: Throwable) {
-                Timber.d("==q onError $e" )
-                e.printStackTrace()
+                    override fun onError(e: Throwable) {
+                        Timber.d("==q onError $e")
+                        e.printStackTrace()
 
-                view.hideProgress()
-                view.showMessage(e.message!!)
+                        view.hideProgress()
+                        view.showMessage(e.message!!)
 
-                if (e is NoInternetException) {
-                    //getPhotosFromLocal()
-                } else {
-                    //dispose()
-                }
-                dispose()
-            }
-        })
+                        if (e is NoInternetException) {
+                            //getPhotosFromLocal()
+                        } else {
+                            //dispose()
+                        }
+                        dispose()
+                    }
+                })
     }
 
-
-    fun loadUsersLocally(){
+    override fun loadUsersLocally() {
         loader.loadUsersLocally()
-            .delay(2500 ,TimeUnit.MILLISECONDS)
+            .delay(2000 ,TimeUnit.MILLISECONDS)
             .compose(rxSchedulerUtils.forSingle())
             .subscribe(object : SingleObserver<List<User>>{
                 override fun onSubscribe(d: Disposable) {
@@ -147,8 +238,12 @@ constructor(
         this.view = view
     }
 
-    private fun dispose() {
-        if (!disposable.isDisposed) disposable.dispose()
+    override fun dispose() {
+        if (!disposable!!.isDisposed) disposable!!.dispose()
+    }
+
+    override fun disposeStream() {
+        if (!streamDisposable!!.isDisposed) streamDisposable!!.dispose()
     }
 
     override fun detachView(retainInstance: Boolean) {

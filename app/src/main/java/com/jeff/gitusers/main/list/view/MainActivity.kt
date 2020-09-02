@@ -16,15 +16,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.hannesdorfmann.mosby.mvp.MvpActivity
-import com.jeff.gitusers.BuildConfig
 import com.jeff.gitusers.R
 import com.jeff.gitusers.adapter.UserListAdapter
-import com.jeff.gitusers.android.base.extension.invokeSimpleDialog
 import com.jeff.gitusers.android.base.extension.longToast
 import com.jeff.gitusers.android.base.extension.shortToast
 import com.jeff.gitusers.database.local.User
 import com.jeff.gitusers.databinding.ActivityMainBinding
 import com.jeff.gitusers.main.list.presenter.MainPresenter
+import com.jeff.gitusers.main.list.presenter.MainPresenter.Companion.REQUEST_LOAD_INITIAL_USERS
+import com.jeff.gitusers.main.list.presenter.MainPresenter.Companion.REQUEST_LOAD_MORE_USERS
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.content_main.view.*
 import timber.log.Timber
@@ -53,17 +53,28 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(),
         setContentView(R.layout.activity_main)
         mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        mainPresenter.loadInitialUsers()
+        mainPresenter.startStream()
+        mainPresenter.queue(REQUEST_LOAD_INITIAL_USERS)
 
         setUpToolbarTitle()
         mainBinding.root.swipeRefreshLayout.setOnRefreshListener {
-            mainPresenter.loadInitialUsers()
+            mainPresenter.queue(REQUEST_LOAD_INITIAL_USERS)
         }
         initScrollListener()
-
     }
 
 
+    override fun onPause() {
+        super.onPause()
+        mainPresenter.dispose()
+        mainPresenter.disposeStream()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mainPresenter.dispose()
+        mainPresenter.disposeStream()
+    }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
@@ -161,9 +172,8 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(),
                         && layoutManager.findLastCompletelyVisibleItemPosition()
                         == adapter.itemCount - 1
                         && adapter.itemCount > 29) {
-                        //bottom of list!
                         Timber.d("==q Loading.. more users")
-                        mainPresenter.loadMoreUsers(adapter.getLastIndexId())
+                        mainPresenter.queue(REQUEST_LOAD_MORE_USERS, adapter.getLastIndexId())
                         //isLoading = true
                     }
                 //}
