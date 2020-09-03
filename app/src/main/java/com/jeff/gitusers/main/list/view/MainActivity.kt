@@ -60,6 +60,7 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(),
         mainBinding.root.swipeRefreshLayout.setOnRefreshListener {
             mainPresenter.queue(REQUEST_LOAD_INITIAL_USERS)
         }
+
         initScrollListener()
     }
 
@@ -67,13 +68,12 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(),
     override fun onPause() {
         super.onPause()
         mainPresenter.dispose()
-        mainPresenter.disposeStream()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         mainPresenter.dispose()
-        mainPresenter.disposeStream()
+        mainPresenter.disposeAllStreams()
     }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -116,7 +116,6 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(),
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 // do your logic here
-                shortToast("Submitted $query")
                 return false
             }
 
