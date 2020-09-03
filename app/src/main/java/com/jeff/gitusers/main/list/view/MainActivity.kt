@@ -57,6 +57,7 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(),
         mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         mainPresenter.startQueueStream()
+        mainPresenter.startReconnectStream()
         mainPresenter.queue(REQUEST_LOAD_INITIAL_USERS)
 
         setUpToolbarTitle()

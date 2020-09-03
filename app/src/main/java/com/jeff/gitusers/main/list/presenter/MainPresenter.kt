@@ -9,15 +9,18 @@ interface MainPresenter: MvpPresenter<MainView> {
     fun loadMoreUsers(fromId: Int)
 
     fun startQueueStream()
+    fun startReconnectStream()
     fun queue(request: Int, arg : Int)
     fun queue(request: Int)
 
     fun dispose()
-    fun disposeStream()
+    fun disposeAllStreams()
 
     companion object {
         const val REQUEST_LOAD_MORE_USERS = 0
         const val REQUEST_LOAD_USERS_LOCALLY = 1
         const val REQUEST_LOAD_INITIAL_USERS = 2
     }
+
+    fun whenOnlineLoadDataRemotely()
 }
