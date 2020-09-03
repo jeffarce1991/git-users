@@ -2,6 +2,9 @@ package com.jeff.gitusers.main.list.view
 
 import android.app.ProgressDialog
 import android.app.ProgressDialog.show
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.Network
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -16,15 +19,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.hannesdorfmann.mosby.mvp.MvpActivity
-import com.jeff.gitusers.BuildConfig
 import com.jeff.gitusers.R
 import com.jeff.gitusers.adapter.UserListAdapter
-import com.jeff.gitusers.android.base.extension.invokeSimpleDialog
 import com.jeff.gitusers.android.base.extension.longToast
 import com.jeff.gitusers.android.base.extension.shortToast
 import com.jeff.gitusers.database.local.User
 import com.jeff.gitusers.databinding.ActivityMainBinding
 import com.jeff.gitusers.main.list.presenter.MainPresenter
+import com.jeff.gitusers.main.list.presenter.MainPresenter.Companion.REQUEST_LOAD_INITIAL_USERS
+import com.jeff.gitusers.main.list.presenter.MainPresenter.Companion.REQUEST_LOAD_MORE_USERS
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.content_main.view.*
 import timber.log.Timber
@@ -53,17 +56,46 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(),
         setContentView(R.layout.activity_main)
         mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        mainPresenter.loadInitialUsers()
+        mainPresenter.startQueueStream()
+        mainPresenter.startReconnectStream()
+        mainPresenter.queue(REQUEST_LOAD_INITIAL_USERS)
 
         setUpToolbarTitle()
         mainBinding.root.swipeRefreshLayout.setOnRefreshListener {
-            mainPresenter.loadInitialUsers()
+            mainPresenter.queue(REQUEST_LOAD_INITIAL_USERS)
         }
+
         initScrollListener()
 
+        val connectivityManager = this.getSystemService(Context.CONNECTIVITY_SERVICE)
+                as ConnectivityManager
+
+        connectivityManager
+            .registerDefaultNetworkCallback(object : ConnectivityManager.NetworkCallback() {
+                override fun onAvailable(network: Network) {
+                    Timber.d("==x Network is Online")
+                    //mainPresenter.startReconnectStream()
+                }
+
+                override fun onLost(network: Network?) {
+                    Timber.d("==x Network is Lost")
+                   mainPresenter.startReconnectStream()
+                }
+
+        })
     }
 
 
+    override fun onPause() {
+        super.onPause()
+        mainPresenter.dispose()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mainPresenter.dispose()
+        mainPresenter.disposeAllStreams()
+    }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
@@ -105,7 +137,6 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(),
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 // do your logic here
-                shortToast("Submitted $query")
                 return false
             }
 
@@ -161,9 +192,8 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(),
                         && layoutManager.findLastCompletelyVisibleItemPosition()
                         == adapter.itemCount - 1
                         && adapter.itemCount > 29) {
-                        //bottom of list!
                         Timber.d("==q Loading.. more users")
-                        mainPresenter.loadMoreUsers(adapter.getLastIndexId())
+                        mainPresenter.queue(REQUEST_LOAD_MORE_USERS, adapter.getLastIndexId())
                         //isLoading = true
                     }
                 //}
