@@ -48,6 +48,36 @@ constructor(
                 .repeat()
                 .subscribe()
     }
+
+    /**
+     * @property whenOnlineLoadDataRemotely
+     *
+     * Retry loading remote data immediately once online.
+     *
+     */
+    override fun whenOnlineLoadDataRemotely() {
+        rxInternet.isConnected()
+            .compose(rxSchedulerUtils.forCompletable())
+            .subscribe(object : CompletableObserver{
+                override fun onComplete() {
+                    queue(REQUEST_LOAD_INITIAL_USERS)
+                    Timber.d("==x Online, reloading data.")
+                    view.showMessage("Automatically reloading data from remote.")
+                    dispose(reconnectDisposable)
+                    dispose(reConnectStreamDisposable)
+                }
+
+                override fun onSubscribe(d: Disposable) {
+                    reconnectDisposable = d
+                }
+
+                override fun onError(e: Throwable) {
+                    Timber.d("==x Offline")
+                    Timber.e(e)
+                    dispose(reconnectDisposable)
+                }
+            })
+    }
             .repeat()
             .subscribe()
     }
