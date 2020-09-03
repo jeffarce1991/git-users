@@ -8,7 +8,7 @@ interface MainPresenter: MvpPresenter<MainView> {
     fun loadUsersLocally()
     fun loadMoreUsers(fromId: Int)
 
-    fun startStream()
+    fun startQueueStream()
     fun queue(request: Int, arg : Int)
     fun queue(request: Int)
 

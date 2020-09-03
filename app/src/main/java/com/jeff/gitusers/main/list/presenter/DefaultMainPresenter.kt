@@ -30,17 +30,24 @@ constructor(
     lateinit var users: MutableList<User>
 
     private var disposable: Disposable? = null
-    private var streamDisposable: Disposable? = null
+    private var queueStreamDisposable: Disposable? = null
 
     private var queuedList = mutableListOf<Int>()
     private var argList = ArrayList<Int>()
 
-    //Starts a stream that checkQueuedList every time.
-     override fun startStream() {
-        Single.timer(1, TimeUnit.SECONDS)
-            .compose(rxSchedulerUtils.forSingle())
-            .doOnSuccess{checkQueuedList()}
-            .doOnSubscribe { streamDisposable = it }
+    /**
+     * Starts a stream when offline and emits [whenOnlineLoadDataRemotely] every 3 seconds.
+     *
+     */
+    override fun startReconnectStream() {
+        rxInternet.notConnected()
+                .andThen(Observable.timer(3, TimeUnit.SECONDS))
+                .compose(rxSchedulerUtils.forObservable())
+                .doOnNext{ whenOnlineLoadDataRemotely() }
+                .doOnSubscribe { reConnectStreamDisposable = it }
+                .repeat()
+                .subscribe()
+    }
             .repeat()
             .subscribe()
     }
