@@ -31,8 +31,10 @@ constructor(
 
     private var disposable: Disposable? = null
     private var queueStreamDisposable: Disposable? = null
+    private var reConnectStreamDisposable: Disposable? = null
+    private var reconnectDisposable: Disposable? = null
 
-    private var queuedList = mutableListOf<Int>()
+    private var queuedRequestList = mutableListOf<Int>()
     private var argList = ArrayList<Int>()
 
     /**
@@ -78,30 +80,53 @@ constructor(
                 }
             })
     }
+
+
+    /**
+     * @property startQueueStream
+     *
+     * Starts a stream that emits [checkQueuedList] every seconds.
+     *
+     */
+     override fun startQueueStream() {
+        Observable.timer(1, TimeUnit.SECONDS)
+            .compose(rxSchedulerUtils.forObservable())
+            .doOnNext{ checkQueuedList() }
+            .doOnSubscribe { queueStreamDisposable = it }
             .repeat()
             .subscribe()
     }
 
-    //Invokes queued request until queuedList is empty.
+    /**
+     * Invokes [validateRequest] until queuedList is empty
+     * and makes sure that disposable [isDisposed].
+     *
+     */
     private fun checkQueuedList() {
-        Timber.d("==x ${queuedList.size}")
-        if(queuedList.isNotEmpty()) {
+        if(queuedRequestList.isNotEmpty()) {
             isDisposed(disposable) { validateRequest() }
         }
     }
-
+    /**
+     * Invokes index 0 of [queuedRequestList]
+     * If request has argument get it from [argList]
+     *
+     */
     private fun validateRequest() {
         if (argList.isEmpty()) {
-            invoke(queuedList[0])
+            invoke(queuedRequestList[0])
         } else {
-            invoke(queuedList[0], argList[0])
+            invoke(queuedRequestList[0], argList[0])
             argList.removeAt(0)
         }
-        queuedList.removeAt(0)
+        queuedRequestList.removeAt(0)
     }
 
-    private fun invoke(method: Int) {
-        when (method) {
+    /**
+     * Invokes request base on given [request]*
+     */
+    private fun invoke(request: Int) {
+        when (request) {
             REQUEST_LOAD_INITIAL_USERS -> {
                 loadInitialUsers()
             }
@@ -111,6 +136,9 @@ constructor(
         }
     }
 
+    /**
+     * Invokes request with arg base on given [request]*
+     */
     private fun invoke(method: Int, params: Int) {
         when (method) {
             REQUEST_LOAD_MORE_USERS -> {
@@ -119,19 +147,50 @@ constructor(
         }
     }
 
-    //Queue request
-    //Add requested method to requestList and queue it up.
-    //This method is invoked in Activity side.
+    /**
+     * Add requested method to [queuedRequestList] and queue it up.
+     *
+     */
     override fun queue(request: Int) {
-        queuedList.add(request)
+        queuedRequestList.add(request)
     }
 
-    //Queue request with int parameter
-    //Add requested method to requestList and queue it up.
-    //This method is invoked in Activity side.
+
+    /**
+     * Add requested method to [queuedRequestList] and queue it up.
+     * with argument
+     */
     override fun queue(request: Int, arg: Int) {
-        queuedList.add(request)
+        queuedRequestList.add(request)
         argList.add(arg)
+    }
+
+    /**
+     * @property isDisposed
+     * This function makes sure network calls is limited to 1 request at a time.
+     *
+     * Check if [d] is already disposed
+     * and then invokes [onDisposed]
+     * else must wait for [d] to be disposed first.
+     *
+     */
+    private fun isDisposed(d: Disposable?, onDisposed: () -> Unit) {
+        d?.let {
+            when {
+                it.isDisposed -> {
+                    Timber.d("==x Invoking func now.")
+                    onDisposed()
+                }
+                else -> {
+                    Timber.d("==x Call dispose() first.")
+                }
+            }
+        }.run {
+            if (d == null) {
+                onDisposed()
+                Timber.d("==x disposable is null.")
+            }
+        }
     }
 
     override fun loadInitialUsers() {
@@ -174,25 +233,6 @@ constructor(
                 }
             })
 
-    }
-
-    private fun isDisposed(d: Disposable?, onDisposed: () -> Unit) {
-        d?.let {
-            when {
-                it.isDisposed -> {
-                    Timber.d("==x Invoking func now.")
-                    onDisposed()
-                }
-                else -> {
-                    Timber.d("==x Call dispose() first.")
-                }
-            }
-        }.run {
-            if (d == null) {
-                onDisposed()
-                Timber.d("==x disposable is null.")
-            }
-        }
     }
 
     override fun loadMoreUsers(fromId: Int) {
@@ -275,12 +315,17 @@ constructor(
         this.view = view
     }
 
+    fun dispose(d: Disposable?) {
+        if (!d!!.isDisposed) d.dispose()
+    }
+
     override fun dispose() {
         if (!disposable!!.isDisposed) disposable!!.dispose()
     }
 
-    override fun disposeStream() {
-        if (!streamDisposable!!.isDisposed) streamDisposable!!.dispose()
+    override fun disposeAllStreams() {
+        if (!queueStreamDisposable!!.isDisposed) queueStreamDisposable!!.dispose()
+        if (!reConnectStreamDisposable!!.isDisposed) reConnectStreamDisposable!!.dispose()
     }
 
     override fun detachView(retainInstance: Boolean) {
