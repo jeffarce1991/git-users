@@ -2,6 +2,9 @@ package com.jeff.gitusers.main.list.view
 
 import android.app.ProgressDialog
 import android.app.ProgressDialog.show
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.Network
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -62,6 +65,23 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(),
         }
 
         initScrollListener()
+
+        val connectivityManager = this.getSystemService(Context.CONNECTIVITY_SERVICE)
+                as ConnectivityManager
+
+        connectivityManager
+            .registerDefaultNetworkCallback(object : ConnectivityManager.NetworkCallback() {
+                override fun onAvailable(network: Network) {
+                    Timber.d("==x Network is Online")
+                    //mainPresenter.startReconnectStream()
+                }
+
+                override fun onLost(network: Network?) {
+                    Timber.d("==x Network is Lost")
+                   mainPresenter.startReconnectStream()
+                }
+
+        })
     }
 
 
