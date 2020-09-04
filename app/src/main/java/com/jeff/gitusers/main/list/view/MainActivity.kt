@@ -22,13 +22,13 @@ import com.hannesdorfmann.mosby.mvp.MvpActivity
 import com.jeff.gitusers.R
 import com.jeff.gitusers.adapter.UserListAdapter
 import com.jeff.gitusers.android.base.extension.longToast
-import com.jeff.gitusers.android.base.extension.shortToast
 import com.jeff.gitusers.database.local.User
 import com.jeff.gitusers.databinding.ActivityMainBinding
 import com.jeff.gitusers.main.list.presenter.MainPresenter
 import com.jeff.gitusers.main.list.presenter.MainPresenter.Companion.REQUEST_LOAD_INITIAL_USERS
 import com.jeff.gitusers.main.list.presenter.MainPresenter.Companion.REQUEST_LOAD_MORE_USERS
 import dagger.android.AndroidInjection
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.content_main.view.*
 import timber.log.Timber
 import java.util.*
@@ -100,6 +100,7 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(),
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
         initializeSearchView(menu)
+        mainPresenter.loadUsersLocally()
 
         return true
     }
@@ -111,7 +112,7 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(),
         supportActionBar!!.title = resources.getString(R.string.app_name)
     }
 
-    private fun initializeSearchView(menu: Menu?) {
+    fun initializeSearchView(menu: Menu?) {
         val searchItem: MenuItem = menu!!.findItem(R.id.action_search)
         searchView =
             MenuItemCompat.getActionView(searchItem) as SearchView
@@ -131,6 +132,29 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(),
             )
         )
 
+    }
+
+    fun initializeSearchView(menu: Menu?, users: List<User>) {
+        val searchItem: MenuItem = menu!!.findItem(R.id.action_search)
+        searchView =
+            MenuItemCompat.getActionView(searchItem) as SearchView
+        searchView.setOnCloseListener { true }
+
+        val searchPlate =
+            searchView.findViewById(androidx.appcompat.R.id.search_src_text) as EditText
+        searchPlate.hint = resources.getString(R.string.search_hint)
+        searchPlate.setHintTextColor(resources.getColor(R.color.light_gray))
+        searchPlate.setTextColor(resources.getColor(R.color.white))
+
+        val searchPlateView: View = searchView.findViewById(androidx.appcompat.R.id.search_plate)
+        searchPlateView.setBackgroundColor(
+            ContextCompat.getColor(
+                this,
+                android.R.color.transparent
+            )
+        )
+
+        setSearchQueryListener(users)
     }
 
     override fun setSearchQueryListener(users: List<User>) {
@@ -207,7 +231,6 @@ class MainActivity : MvpActivity<MainView, MainPresenter>(),
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this@MainActivity)
         mainBinding.root.customRecyclerView.layoutManager = layoutManager
         mainBinding.root.customRecyclerView.adapter = adapter
-
     }
 
     //Method to generate List of data using RecyclerView with custom com.project.retrofit.adapter*//*
