@@ -1,5 +1,6 @@
 package com.jeff.gitusers.main.list.presenter
 
+import android.view.Menu
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter
 import com.jeff.gitusers.database.local.User
 import com.jeff.gitusers.main.list.presenter.MainPresenter.Companion.REQUEST_LOAD_INITIAL_USERS
@@ -195,7 +196,6 @@ constructor(
 
     override fun loadInitialUsers() {
             rxInternet.isConnected()
-            .delay(2,TimeUnit.SECONDS)
             .andThen(loader.loadInitialUsersRemotely())
             .compose(rxSchedulerUtils.forSingle())
             .subscribe(object : SingleObserver<List<User>>{
@@ -225,11 +225,10 @@ constructor(
                     view.showMessage(e.message!!)
 
                     if (e is NoInternetException) {
-                        view.showMessage(e.message!! + ", Cached data will be loaded.")
-                        loadUsersLocally()
+                        view.showMessage(e.message!!)
                     } else {
-                        dispose()
                     }
+                    dispose()
                 }
             })
 
@@ -276,9 +275,8 @@ constructor(
 
     override fun loadUsersLocally() {
         loader.loadUsersLocally()
-            .delay(2000 ,TimeUnit.MILLISECONDS)
             .compose(rxSchedulerUtils.forSingle())
-            .subscribe(object : SingleObserver<List<User>>{
+            .subscribe(object : SingleObserver<List<User>> {
                 override fun onSubscribe(d: Disposable) {
                     disposable = d
                     view.showProgress()
@@ -290,9 +288,9 @@ constructor(
                     view.hideProgress()
 
                     if (t.isNotEmpty()) {
-                        view.setSearchQueryListener(t)
+                        view.initializeSearchView(menu, t)
                         view.generateInitialUsers(t)
-                        view.showMessage("${t.size} cached data loaded.")
+                        //view.showMessage("${t.size} cached data loaded.")
                     } else {
                         view.showMessage("No existing cached data.")
                     }
