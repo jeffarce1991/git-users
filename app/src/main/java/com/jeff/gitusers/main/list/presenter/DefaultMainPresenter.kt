@@ -288,7 +288,7 @@ constructor(
                     view.hideProgress()
 
                     if (t.isNotEmpty()) {
-                        view.initializeSearchView(menu, t)
+                        view.setSearchQueryListener(t)
                         view.generateInitialUsers(t)
                         //view.showMessage("${t.size} cached data loaded.")
                     } else {
