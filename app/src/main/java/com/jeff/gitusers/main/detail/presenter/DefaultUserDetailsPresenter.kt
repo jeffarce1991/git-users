@@ -71,7 +71,6 @@ constructor(
 
     override fun loadUserDetailsLocally(id: Int) {
         userLoader.loadUserDetailsLocally(id)
-            .delay(1 , TimeUnit.SECONDS)
             .compose(rxScheduler.forSingle())
             .subscribe(object : SingleObserver<UserDetails>{
                 override fun onSubscribe(d: Disposable) {
